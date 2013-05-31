@@ -9,39 +9,44 @@
 
 import argparse
 from os import listdir, makedirs
-from os.path import isfile, join, exists, basename
+from os.path import isfile, join, exists#, basename
 import subprocess
 import random
+import csv
 
 
-features = ['Energy', 'SpectralShapeStatistics', 'ZCR', 'SpectralRolloff', 'MagnitudeSpectrum']
+features = ['Energy', 'SpectralShapeStatistics', 'ZCR', 'SpectralRolloff']
 block_size = 32768
 step_size = 24576
+tmp_directory = '/tmp/extract_features_tmp'
+num_frames_song = 3
 
 
 def get_features(filename, feature_plan):
-    output = '/tmp/extract_features_tmp/'
-    subprocess.call(["yaafe.py", "-r", "44100", "-b", output, "-c", feature_plan])
+    process = subprocess.Popen(["python","/usr/bin/yaafe.py", "-r", "44100", "-b", tmp_directory, "-c", feature_plan, filename], stdout=subprocess.PIPE)
+    stdout, err = process.communicate()
+    print err
+    print stdout
 
-    songname = basename(filename)
+    songname = filename
 
     num_frames = 0
     frames = []
 
-    features = {"song": [filename]*10}
+    features_list = {"song": [filename] * num_frames_song}
 
-    for prefix in [feature_name[:3].lower() for feature_name in features]:
-        csv_filename = join(output, songname + "." + feature_name[:3].lower() + ".csv")
+    for prefix in [feature_name[-3:].lower() for feature_name in features]:
+        csv_filename = join(tmp_directory, songname + "." + prefix + ".csv")
         if num_frames == 0:
             process = subprocess.Popen(['wc', '-l', csv_filename], stdout=subprocess.PIPE)
             num_frames, err = process.communicate()
-            print num_frames
-            frames = random.sample(xrange(num_frames), 10)
+            num_frames = num_frames.split(' ')[0]
+            frames = random.sample(xrange(int(num_frames)), num_frames_song)
 
         values = read_lines(csv_filename, frames)
-        features[prefix] = values
+        features_list[prefix] = values
 
-    return features
+    return features_list
 
 
 def read_lines(filename, list_of_lines):
@@ -52,13 +57,13 @@ def read_lines(filename, list_of_lines):
     args += [filename]
     process = subprocess.Popen(args, stdout=subprocess.PIPE)
     lines, err = process.communicate()
-    return lines.split('\n')
+    return lines.split('\n')[:-1] # Ultimo elemento es vacio.
 
 
 def save_feature_plan(directory):
     file_txt = ''
     for feature in features:
-        file_txt += feature[:3].lower() + ': blockSize=' + str(block_size) + ' stepSize=' + str(step_size)
+        file_txt += feature[-3:].lower() + ': ' + feature + ' blockSize=' + str(block_size) + ' stepSize=' + str(step_size) + '\n'
 
     filename = join(directory, 'feature_plan')
     f = open(filename, 'w')
@@ -74,8 +79,26 @@ def get_list_of_files(input_directory):
     return [join(input_directory, f) for f in listdir(input_directory) if isfile(join(input_directory, f)) and correct_type(f)]
 
 
-def save_features_csv(list_of_features):
-    pass
+def save_features_csv(list_of_map_features, output_file):
+    print "Se guarda la lista de features en", output_file
+
+    final_map = {}
+
+    for feature_map in list_of_map_features:
+        for feature in feature_map.keys():
+            if feature in final_map:
+                final_map[feature] += feature_map[feature]
+            else:
+                final_map[feature] = feature_map[feature] 
+    
+    field_names = final_map.keys()
+
+    list_of_lists = [final_map[field] for field in field_names]
+
+    with open(output_file, 'wb') as f:
+        writer = csv.writer(f)
+        writer.writerow(field_names)
+        writer.writerows(zip(*list_of_lists))
 
 
 def main():
@@ -85,19 +108,18 @@ def main():
     args = vars(parser.parse_args())
 
     list_of_files = get_list_of_files(args['input'])
-    list_of_features = []
+    list_of_map_features = []
 
-    directory = '/tmp/extract_features_tmp'
-    if not exists(directory):
-        makedirs(directory)
+    if not exists(tmp_directory):
+        makedirs(tmp_directory)
 
-    feature_plan = save_feature_plan(directory)
+    feature_plan = save_feature_plan(tmp_directory)
 
     for filename in list_of_files:
         features = get_features(filename, feature_plan)
-        list_of_features += [features]
+        list_of_map_features += [features]
 
-    save_features_csv(list_of_features)
+    save_features_csv(list_of_map_features, args['output'])
 
 
 if __name__ == '__main__':
