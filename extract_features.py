@@ -1,15 +1,15 @@
 
-# # extract_features.py folder/ output_file.csv
+# # extract_features.py -i folder/ -o output_file.csv
 
 # output_file.csv
 
-# song, feature1, feature2, ..., featurenN, genre
+# song, feature1, feature2, ..., featurenN
 
 # Para cada cancion se obtienen 10 frames al azar.
 
 import argparse
 from os import listdir, makedirs
-from os.path import isfile, join, exists#, basename
+from os.path import isfile, join, exists
 import subprocess
 import random
 import csv
@@ -19,11 +19,11 @@ features = ['Energy', 'SpectralShapeStatistics', 'ZCR', 'SpectralRolloff']
 block_size = 32768
 step_size = 24576
 tmp_directory = '/tmp/extract_features_tmp'
-num_frames_song = 3
+num_frames_song = 10
 
 
 def get_features(filename, feature_plan):
-    process = subprocess.Popen(["python","/usr/bin/yaafe.py", "-r", "44100", "-b", tmp_directory, "-c", feature_plan, filename], stdout=subprocess.PIPE)
+    process = subprocess.Popen(["python", "/usr/bin/yaafe.py", "-r", "44100", "-b", tmp_directory, "-c", feature_plan, filename], stdout=subprocess.PIPE)
     stdout, err = process.communicate()
     print err
     print stdout
@@ -57,7 +57,7 @@ def read_lines(filename, list_of_lines):
     args += [filename]
     process = subprocess.Popen(args, stdout=subprocess.PIPE)
     lines, err = process.communicate()
-    return lines.split('\n')[:-1] # Ultimo elemento es vacio.
+    return lines.split('\n')[:-1]  # Ultimo elemento es vacio.
 
 
 def save_feature_plan(directory):
@@ -89,8 +89,8 @@ def save_features_csv(list_of_map_features, output_file):
             if feature in final_map:
                 final_map[feature] += feature_map[feature]
             else:
-                final_map[feature] = feature_map[feature] 
-    
+                final_map[feature] = feature_map[feature]
+
     field_names = final_map.keys()
 
     list_of_lists = [final_map[field] for field in field_names]
