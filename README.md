@@ -1,4 +1,8 @@
-clasificacion-de-musica
+Clasificación de Música
 =======================
 
-Clasificación de Música - Proyecto de la materia Algoritmos Evolutivos 2013
+Proyecto de la materia Algoritmos Evolutivos 2013
+Integrantes:
+    - María Noel Quiñones (@manoqui)
+    - Javier Rey (@vierja)
+
