@@ -1,5 +1,5 @@
 from rule import Rule
-
+import csv
 
 DEFAULT_DISCRETE_INTERVALS = 100
 
