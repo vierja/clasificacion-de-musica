@@ -52,20 +52,20 @@ class Rule(object):
         La idea es crear un intervalo que parezca una regla valida.
         En primer lugar para facilitar el trabajo inicial se va a realizar una
         regla con una secuencia seguida de True y el resto False.
-    
+
         Ejemplo:
         discrete_intervals = 5
         0 --- 0.25 --- 0.50 --- 0.75 --- 1
            F        T        F        F
 
         value = 0.63
-        
+
         quiero obtener 0.50 = 0.63 - X
-        X = 0.63 % 0.25 
+        X = 0.63 % 0.25
 
         value - float(float(value) % (float(1)/(discrete_intervals - 1)))
 
-        con 0.50 obtener el numero de intevalo = 
+        con 0.50 obtener el numero de intevalo
         X * 0.25 = 0.50, X = 0.50 / 0.25
 
 
@@ -91,7 +91,6 @@ class Rule(object):
 
         return feature_list
 
-
     def is_type(self, values):
         """
         Devuelve True o False dependiendo si los valores se encuentran dentro
@@ -108,8 +107,8 @@ class Rule(object):
                 # Si el valor == 1 entonces la posicion es la ultima.
                 value_pos = -1
 
-            if not features_lists[pos][value_pos]:
+            if not self.features_lists[pos][value_pos]:
                 return False
-        
+
         # Si no retorne False hasta entonces entonces es True.
         return True
