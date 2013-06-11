@@ -1,8 +1,13 @@
 Clasificación de Música
 =======================
 
-Proyecto de la materia Algoritmos Evolutivos 2013
+Proyecto para la asignatura [__Algoritmos Evolutivos__](http://www.fing.edu.uy/inco/cursos/geneticos/pmwiki/index.php?n=Main.HomePage) del año 2013
+
 Integrantes:
-    - María Noel Quiñones (@manoqui)
-    - Javier Rey (@vierja)
+- María Noel Quiñones ([@manoqui](https://github.com/manoqui))
+- Javier Rey ([@vierja](https://github.com/vierja))
+
+Docentes:
+- Sergio Nesmachnow
+- Martín Pedemonte
 
