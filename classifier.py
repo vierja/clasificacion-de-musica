@@ -39,7 +39,7 @@ class Classifier(object):
                 rule_dict = {'rule': rule, 'fitness': self._rule_fitness(rule)}
                 self.rules[result_type].append(rule_dict)
 
-    def train(min_fitness=0.9, gen_select=4):
+    def train(self, min_fitness=0.9, gen_select=4):
         """
         Realiza el entrenamiento de las reglas, mutandolas usando tecnicas de
         algoritmos evolutivos hasta que el fitness total de el conjunto de las
@@ -48,11 +48,11 @@ class Classifier(object):
         """
         total_fitness = 0
         generation = 0
-        fitness_sum = 0
 
         # itero hasta tener un fitness total mayor al especificado.
         while total_fitness > min_fitness:
             max_fitness_list = []
+            generation += 1
             for list_of_rules in self.rules:
                 # devuelve una nueva lista
                 list_of_rules = self._select_rules(list_of_rules, gen_select)
