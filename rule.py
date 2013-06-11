@@ -97,16 +97,19 @@ class Rule(object):
         de las reglas especificadas.
         Los values deben estar normalizados de 0 a 1.
         """
+        interval = (1.0/(self.discrete_intervals - 1))
+
         for pos, value in enumerate(values):
             if value != 1:
                 # Obtengo el valor minimo de el intervalo al que pertenece.
-                min_val = value - value % (1.0/(self.discrete_intervals - 1))
+                min_val = value - value % interval
                 # Calculo la posicion de el intervalo.
-                value_pos = int(min_val / (1.0/(self.discrete_intervals - 1)))
+                value_pos = int(min_val / interval)
             else:
                 # Si el valor == 1 entonces la posicion es la ultima.
                 value_pos = -1
 
+            # si nos encontramos con un valor False, devolvemos False. 
             if not self.features_lists[pos][value_pos]:
                 return False
 
