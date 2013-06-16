@@ -18,7 +18,7 @@ funcione, mejorarla.
 class Rule(object):
     """Regla de clasificacion individual."""
 
-    def __init__(self, features, discrete_intervals, result_type):
+    def __init__(self, features, discrete_intervals, result_type, parent1=None, parent2=None):
         """
         Crea la regla.
         `features` es la lista de nombre de features que pertenecen a la regla.
@@ -34,17 +34,26 @@ class Rule(object):
         self.features_lists = []
         self.result_type = result_type
 
-        # La regla se representa como un map de listas
-        # Donde cada valor del map principal representa un feature
-        # Y la lista de ese feature representan los intervalos discretos.
+        if parent1 is None or parent2 is None:
+            # La regla se representa como un map de listas
+            # Donde cada valor del map principal representa un feature
+            # Y la lista de ese feature representan los intervalos discretos.
 
-        # En principio las listas van a tener largo fijo (discrete_intervals)
-        # pero luego el largo (o minima unidad de discretizacion) va a poder
-        # evolucionar con el algoritmo.
+            # En principio las listas van a tener largo fijo (discrete_intervals)
+            # pero luego el largo (o minima unidad de discretizacion) va a poder
+            # evolucionar con el algoritmo.
 
-        # Enumeramos las reglas para tener claro
-        for feature in self.features:
-            self.features_lists.append(self._init_random_interval())
+            # Enumeramos las reglas para tener claro
+            for feature in self.features:
+                self.features_lists.append(self._init_random_interval())
+        else:
+            # Si se pasan padres a la regla entonces se crea una
+            # regla crossover a partir de estos.
+            pass
+
+    @classmethod
+    def crossover(cls, parent1, parent2):
+        return cls(parent1.features, parent1.discrete_intervals, parent1.result_type, parent1=parent1, parent2=parent2)
 
     def _init_random_interval(self):
         """
@@ -115,3 +124,7 @@ class Rule(object):
 
         # Si no retorne False hasta entonces entonces es True.
         return True
+
+    def mutate(self):
+        # TODO: Hacer metodo mutate
+        pass

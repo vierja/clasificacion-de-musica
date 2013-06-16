@@ -1,5 +1,7 @@
-from rule import Rule
+import itertools
 import selection
+import random
+from rule import Rule
 
 DEFAULT_DISCRETE_INTERVALS = 100
 
@@ -126,19 +128,32 @@ class Classifier(object):
             - Eleccion
             - Forma de cruzamiento
         """
+        """
+        Implementacion α. Suponiendo que se obtienen 4 reglas, y se quieren
+        10 en total se crean hijos a partir de las combinaciones de 4 tomadas
+        de a dos (6) y se lo suma a los padres para un total de 10.
+        """
+        combinations = [x for x in itertools.combinations(list_of_rules, 2)]
+        assert len(combinations) == 2
+        # Uso itertools.combinations para crear sets de combinaciones de los datos de
+        for rule1, rule2 in combinations:
+            new_rule = Rule.crossover(rule1, rule2)
+            rule_map = {'fitness': 0, 'rule': new_rule}
+            list_of_rules.append(rule_map)
+
         return list_of_rules
 
-    def _mutate(self, list_of_rules):
+    def _mutate(self, list_of_rules, mutation_probability=0.02):
         """
         Muta algunas reglas de las reglas en la lista `list_of_rules`.
 
-        TODO: A DEFINIRSE.
-            - Parametros
-            - Como elegir
-            - Tipo de mutacion
+        Recibe una `mutation_probability` que por default es 2%.
+        Para cada regla se hace una mutacion con el 2% de probabilidad.
         """
-        # No devuelve, modifica directamente la lista.
-        pass
+        for rule_map in list_of_rules:
+            # random.random() devuelve un numero de 0 a 1.
+            if random.random() < mutation_probability:
+                rule_map['rule'].mutate()
 
     def _evaluate_fitness(self, list_of_rules):
         """
