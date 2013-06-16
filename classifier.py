@@ -22,6 +22,7 @@ class Classifier(object):
         self.len_data = len(self.data)
         self.size_rule_generation = size_rule_generation
         self.len_rules = len(self.result_types)
+        self.best_rules = {}
 
         # Cada regla tiene `size_rule_generation` reglas inicialmente creadas
         # al azar.
@@ -52,20 +53,26 @@ class Classifier(object):
 
         # itero hasta tener un fitness total mayor al especificado.
         while total_fitness > min_fitness:
+            best_rules = {}
             max_fitness_list = []
             generation += 1
-            for list_of_rules in self.rules:
+            for rule_name, list_of_rules in self.rules.items():
                 # devuelve una nueva lista
                 list_of_rules = self._select_rules(list_of_rules, gen_select)
                 list_of_rules = self._crossover(list_of_rules)
                 # modifica la lista
                 self._mutate(list_of_rules)
-                max_fitness = self._evaluate_fitness(list_of_rules)
+                max_fitness, best_rule = self._evaluate_fitness(list_of_rules)
+                # Se guarda el max_fitness para comparar rapidamente.
                 max_fitness_list.append(max_fitness)
+                # Guardo la mejor regla en caso de que quiera tenerla.
+                best_rules[rule_name] = {'rule': best_rule, 'fitness': max_fitness}
 
             # El total_fitness se puede calcular como el minimo fitness de
             # todas las reglas.
             total_fitness = min(max_fitness_list)
+
+        self.best_rules = best_rules
 
         return total_fitness
 
@@ -101,7 +108,7 @@ class Classifier(object):
 
         Puede ser:
             Roulette wheel selection
-            TODO: Rank selection 
+            TODO: Rank selection
             TODO: Tournament selection
         """
 
@@ -109,7 +116,7 @@ class Classifier(object):
             return selection.roulette_wheel_selection(list_of_rules, num_select)
 
         return list_of_rules
-        
+
     def _crossover(self, list_of_rules):
         """
         Crea cruces entre las reglas en la lista `list_of_rules`.
@@ -140,12 +147,14 @@ class Classifier(object):
         Devuelve el maximo valor de fitness obtenido.
         """
         max_fitness = 0
+        max_fitness_rule = None
         for rule in list_of_rules:
             rule['fitness'] = self._rule_fitness(rule['rule'])
             if rule['fitness'] > max_fitness:
                 max_fitness = rule['fitness']
+                max_fitness_rule = rule['rule']
 
-        return max_fitness
+        return max_fitness, max_fitness_rule
 
     def _read_source():
         """

@@ -22,7 +22,7 @@ class Rule(object):
         """
         Crea la regla.
         `features` es la lista de nombre de features que pertenecen a la regla.
-        `discrete_intervals` es la cantidad de intervalos para cada valor de 
+        `discrete_intervals` es la cantidad de intervalos para cada valor de
         cada feature de la regla.
         Los valores de los features deben de estar normalizados entre 0 y 1
         para facilmente calcular su posicion.
@@ -109,7 +109,7 @@ class Rule(object):
                 # Si el valor == 1 entonces la posicion es la ultima.
                 value_pos = -1
 
-            # si nos encontramos con un valor False, devolvemos False. 
+            # si nos encontramos con un valor False, devolvemos False.
             if not self.features_lists[pos][value_pos]:
                 return False
 
