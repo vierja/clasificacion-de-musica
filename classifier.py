@@ -1,4 +1,5 @@
 from rule import Rule
+import selection
 
 DEFAULT_DISCRETE_INTERVALS = 100
 
@@ -92,7 +93,7 @@ class Classifier(object):
         # los resultados positivos / la cantidad de datos de prueba
         return positive_results / self.len_data
 
-    def _select_rules(self, list_of_rules, num_select):
+    def _select_rules(self, list_of_rules, num_select, type=selection.ROULETTE_WHEEL_SELECTION):
         """
         Toma como parametro una lista de reglas con su respectivo fitness
         Elige `num_select` reglas de `list_of_rules` usando determinada
@@ -100,13 +101,15 @@ class Classifier(object):
 
         Puede ser:
             Roulette wheel selection
-            Rank selection
-            Tournament selection
-
-        TODO: A DEFINIRSE
+            TODO: Rank selection 
+            TODO: Tournament selection
         """
-        return list_of_rules
 
+        if type == selection.ROULETTE_WHEEL_SELECTION:
+            return selection.roulette_wheel_selection(list_of_rules, num_select)
+
+        return list_of_rules
+        
     def _crossover(self, list_of_rules):
         """
         Crea cruces entre las reglas en la lista `list_of_rules`.
