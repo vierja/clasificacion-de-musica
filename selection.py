@@ -48,12 +48,12 @@ def rank_selection(list_of_rules, num_select):
 	
     selected_rules = []
     if num_select <= len(list_of_rules): # Este control creo que no es necesario pero por las dudas
-		# Ordeno primero las reglas por su valor de fitness
-		order_rules = sorted(list_of_rules, key=lambda rule: rule['fitness'])
-		# Selecciono las mejores 'num_select'
-		selected_rules = order_rules[:num_select]
+	# Ordeno primero las reglas por su valor de fitness
+	order_rules = sorted(list_of_rules, key=lambda rule: rule['fitness'])
+	# Selecciono las mejores 'num_select'
+	selected_rules = order_rules[:num_select]
 		
-		return selected_rules
+	return selected_rules
 
 		
 # Para el tournament selection se necesitan 2 parametros. Cambiar luego _select_rules en classifier.py
@@ -66,14 +66,14 @@ def tournament_selection(list_of_rules, num_rules, num_select):
     selected_rules = []
     for i in range(num_rules):
         # Selecciono aleatoriamente una regla dentro de la lista de reglas
-		index = random.randint(0, len(list_of_rules)-1)
+	index = random.randint(0, len(list_of_rules)-1)
 		
-		# Si la regla ya esta seleccionada entonces sigo buscando otra
-		while list_of_rules(index) in selected_rules:
-			index = random.randint(0, len(list_of_rules)-1)
+	# Si la regla ya esta seleccionada entonces sigo buscando otra
+	while list_of_rules(index) in selected_rules:
+		index = random.randint(0, len(list_of_rules)-1)
 			
-		# Agrego la regla seleccionada	
-		selected_rules.append(list_of_rules(index))
+	# Agrego la regla seleccionada	
+	selected_rules.append(list_of_rules(index))
 
     # Ordeno las reglas y selecciono las mejores 'num_select'
     rank_selection(selected_rules, num_select)
