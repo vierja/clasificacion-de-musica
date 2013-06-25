@@ -178,6 +178,6 @@ class Classifier(object):
         data: lista de dict (Maps) compuestos de:
             'values': lista ordenada (mismo orden que features) de los valores
             'result_type': tipo de resultado de esos valores.
-        result_types: lista de los posibles tipos de valores de los resultados
+            'result_types': lista de los posibles tipos de valores de los resultados
         """
         return [], [], []
