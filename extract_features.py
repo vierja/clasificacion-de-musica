@@ -34,7 +34,7 @@ def get_features(filename, feature_plan):
 
     genre = get_top_tag(basename(filename))
 
-    features_list = {"song": [filename] * num_frames_song, "genre": genre}
+    features_list = {"song": [filename] * num_frames_song, "genre": [genre] * num_frames_song}
 
     for prefix in [feature_name[-3:].lower() for feature_name in features]:
         csv_filename = join(tmp_directory, filename + "." + prefix + ".csv")
