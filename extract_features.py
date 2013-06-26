@@ -9,7 +9,7 @@
 
 import argparse
 from os import listdir, makedirs
-from os.path import isfile, join, exists
+from os.path import isfile, join, exists, basename
 import subprocess
 import random
 import csv
@@ -29,7 +29,7 @@ def get_features(filename, feature_plan):
     print err
     print stdout
 
-    songname = filename
+    songname = basename(filename)
 
     num_frames = 0
     frames = []

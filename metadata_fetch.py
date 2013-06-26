@@ -39,3 +39,5 @@ if __name__ == '__main__':
     print get_top_tag("The Beatles - Yellow Submarine.mp3") == 'classic rock'
     print get_top_tag("Metallica - Whiskey in the Jar.mp3") == 'metal'
     print get_top_tag("No Te Va Gustar - Chau.mp3") == 'rock'
+    print get_top_tag("Daft Punk - Doin' It Right.mp3")
+    print get_top_tag("Daft Punk - Get Lucky.mp3")
