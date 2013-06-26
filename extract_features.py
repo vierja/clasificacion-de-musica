@@ -29,17 +29,15 @@ def get_features(filename, feature_plan):
     print err
     print stdout
 
-    songname = basename(filename)
-
     num_frames = 0
     frames = []
 
-    genre = get_top_tag(songname)
+    genre = get_top_tag(basename(filename))
 
     features_list = {"song": [filename] * num_frames_song, "genre": genre}
 
     for prefix in [feature_name[-3:].lower() for feature_name in features]:
-        csv_filename = join(tmp_directory, songname + "." + prefix + ".csv")
+        csv_filename = join(tmp_directory, filename + "." + prefix + ".csv")
         if num_frames == 0:
             process = subprocess.Popen(['wc', '-l', csv_filename], stdout=subprocess.PIPE)
             num_frames, err = process.communicate()
