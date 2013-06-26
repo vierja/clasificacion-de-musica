@@ -13,6 +13,7 @@ from os.path import isfile, join, exists
 import subprocess
 import random
 import csv
+from metadata_fetch import get_top_tag
 
 
 features = ['Energy', 'SpectralShapeStatistics', 'ZCR', 'SpectralRolloff']
@@ -33,7 +34,9 @@ def get_features(filename, feature_plan):
     num_frames = 0
     frames = []
 
-    features_list = {"song": [filename] * num_frames_song}
+    genre = get_top_tag(songname)
+
+    features_list = {"song": [filename] * num_frames_song, "genre": genre}
 
     for prefix in [feature_name[-3:].lower() for feature_name in features]:
         csv_filename = join(tmp_directory, songname + "." + prefix + ".csv")

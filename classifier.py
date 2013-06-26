@@ -143,12 +143,12 @@ class Classifier(object):
 
         return list_of_rules
 
-    def _mutate(self, list_of_rules, mutation_probability=0.02):
+    def _mutate(self, list_of_rules, mutation_probability=0.05):
         """
         Muta algunas reglas de las reglas en la lista `list_of_rules`.
 
-        Recibe una `mutation_probability` que por default es 2%.
-        Para cada regla se hace una mutacion con el 2% de probabilidad.
+        Recibe una `mutation_probability` que por default es 5%.
+        Para cada regla se hace una mutacion con el 5% de probabilidad.
         """
         for rule_map in list_of_rules:
             # random.random() devuelve un numero de 0 a 1.
