@@ -16,7 +16,7 @@ import csv
 from metadata_fetch import get_top_tag
 
 
-features = ['Energy', 'SpectralShapeStatistics', 'ZCR', 'SpectralRolloff']
+features = {'Energy': 'energy', 'SpectralShapeStatistics': 'sss', 'ZCR': 'zcr', 'SpectralRolloff': 'spectral_rolloff'}
 block_size = 32768
 step_size = 24576
 tmp_directory = '/tmp/extract_features_tmp'
@@ -36,8 +36,8 @@ def get_features(filename, feature_plan):
 
     features_list = {"song": [filename] * num_frames_song, "genre": [genre] * num_frames_song}
 
-    for prefix in [feature_name[-3:].lower() for feature_name in features]:
-        csv_filename = join(tmp_directory, filename + "." + prefix + ".csv")
+    for feature_name, short_name in features.items():
+        csv_filename = join(tmp_directory, filename + "." + short_name + ".csv")
         if num_frames == 0:
             process = subprocess.Popen(['wc', '-l', csv_filename], stdout=subprocess.PIPE)
             num_frames, err = process.communicate()
@@ -45,7 +45,16 @@ def get_features(filename, feature_plan):
             frames = random.sample(xrange(int(num_frames)), num_frames_song)
 
         values = read_lines(csv_filename, frames)
-        features_list[prefix] = values
+        if feature_name == 'SpectralShapeStatistics':
+            # el value trae una lista de 4 elements y queremos 4 listas de cada elemento.
+            # haciendo zip(*) del split nos quedamos con tuplas (sets) despues los pasamos a list
+            list_of_values = [list(a) for a in zip(*[value.split(',') for value in values])]
+            features_list["centroid"] = list_of_values[0]
+            features_list["spread"] = list_of_values[1]
+            features_list["skewness"] = list_of_values[2]
+            features_list["kurtosis"] = list_of_values[3]
+        else:
+            features_list[short_name] = values
 
     return features_list
 
@@ -63,8 +72,8 @@ def read_lines(filename, list_of_lines):
 
 def save_feature_plan(directory):
     file_txt = ''
-    for feature in features:
-        file_txt += feature[-3:].lower() + ': ' + feature + ' blockSize=' + str(block_size) + ' stepSize=' + str(step_size) + '\n'
+    for feature, short_name in features.items():
+        file_txt += short_name + ': ' + feature + ' blockSize=' + str(block_size) + ' stepSize=' + str(step_size) + '\n'
 
     filename = join(directory, 'feature_plan')
     f = open(filename, 'w')
@@ -125,3 +134,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
