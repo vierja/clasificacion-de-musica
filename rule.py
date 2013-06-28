@@ -127,25 +127,25 @@ class Rule(object):
         return True
 
     def mutate(self):
-        """		
+        """
         En la mutacion, cuando se separa un intervalo, se selecciona un punto al azar de los micro-intervalos para hacer el corte. (split)
-        Luego cuando se fusiona dos intervalos, el estado resultante (1 o 0) del intervalo se toma del que tiene más micro-intervalos. 
+        Luego cuando se fusiona dos intervalos, el estado resultante (1 o 0) del intervalo se toma del que tiene más micro-intervalos.
         Si los dos tienen la misma cantidad de micro-intervalos, el valor del estado se elige al azar. (mutate)
         SACADO DEL INFORME. VER IMAGEN QUE PUSIMOS COMO EXPLICACION.
 
-        DUDAS:   
-		    - Aca pasamos la regla, el feature al cual le vamos a hacer el mutate se elige aleatoriamente?
+        DUDAS:
+            - Aca pasamos la regla, el feature al cual le vamos a hacer el mutate se elige aleatoriamente?
             - No me queda claro la representacion de los mini-intervalos.
         """
 
         # Elijo aleatoriamente el feature al cual le voy a aplicar la mutacion
-        feature = random.randint(0, len(features)-1)
+        feature = random.randint(0, len(self.features)-1)
 
         # Elijo aleatoriamente intervalo que voy a mutar
-        position = random.randint(0, self.discrete_intervals-1) # DUDA: por que vos usas el randrange si la posicion tiene que ser un entero?
+        position = random.randint(0, self.discrete_intervals - 1)  # DUDA: por que vos usas el randrange si la posicion tiene que ser un entero?
 
         # Si el valor que voy a mutar es True entonces lo cambio a False
         if self.feature_list[feature][position]:
-	        self.feature_list[feature][position] = False
-        else: # Si el valor que voy a mutar es False entonces lo cambio a True
-	        self.feature_list[feature][position] = True
+            self.feature_list[feature][position] = False
+        else:  # Si el valor que voy a mutar es False entonces lo cambio a True
+            self.feature_list[feature][position] = True
