@@ -11,7 +11,8 @@ def main():
     args = vars(parser.parse_args())
 
     classifier = Classifier(args['data'])
-    classifier.train()
+    final_fitness = classifier.train()
+    print "Training ended\nFinal fitness:", final_fitness
 
 if __name__ == '__main__':
     main()

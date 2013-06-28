@@ -45,6 +45,8 @@ class Classifier(object):
                 rule_dict = {'rule': rule, 'fitness': self._rule_fitness(rule)}
                 self.rules[result_type].append(rule_dict)
 
+        self._print_rules()
+
     def train(self, min_fitness=0.9, gen_select=4):
         """
         Realiza el entrenamiento de las reglas, mutandolas usando tecnicas de
@@ -54,12 +56,15 @@ class Classifier(object):
         """
         total_fitness = 0
         generation = 0
+        best_rules = {}
 
         # itero hasta tener un fitness total mayor al especificado.
-        while total_fitness > min_fitness:
-            best_rules = {}
+        while min_fitness > total_fitness:
             max_fitness_list = []
             generation += 1
+
+            print "Generation", generation
+
             for rule_name, list_of_rules in self.rules.items():
                 # devuelve una nueva lista
                 list_of_rules = self._select_rules(list_of_rules, gen_select)
@@ -137,11 +142,12 @@ class Classifier(object):
         10 en total se crean hijos a partir de las combinaciones de 4 tomadas
         de a dos (6) y se lo suma a los padres para un total de 10.
         """
+        print "len(list_of_rules)", len(list_of_rules)
         combinations = [x for x in itertools.combinations(list_of_rules, 2)]
-        assert len(combinations) == 2
-        # Uso itertools.combinations para crear sets de combinaciones de los datos de
+        # assert len(combinations) == 2 TODO: porque puse esto?!?!!
+        # Uso itertools.combinations para crear sets de combinaciones de las reglas.
         for rule1, rule2 in combinations:
-            new_rule = Rule.crossover(rule1, rule2)
+            new_rule = Rule.crossover(rule1['rule'], rule2['rule'])
             rule_map = {'fitness': 0, 'rule': new_rule}
             list_of_rules.append(rule_map)
 
@@ -167,7 +173,9 @@ class Classifier(object):
         """
         max_fitness = 0
         max_fitness_rule = None
+        print "_evaluate_fitness: se evaluan", len(list_of_rules), "reglas."
         for rule in list_of_rules:
+            print "Se evalua regla de tipo:", rule['rule'].result_type
             rule['fitness'] = self._rule_fitness(rule['rule'])
             if rule['fitness'] > max_fitness:
                 max_fitness = rule['fitness']
@@ -265,3 +273,10 @@ class Classifier(object):
         Guarda las reglas en un archivo
         """
         pass
+
+    def _print_rules(self):
+        for rule_type, rule_list in self.rules.items():
+            print "Rule type:", rule_type
+            for i, rule_dict in enumerate(rule_list):
+                print "#", i, ". Rule fitness:", rule_dict['fitness']
+                rule_dict['rule'].print_rule()

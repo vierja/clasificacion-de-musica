@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import random
 import numpy as np
+import sys
 
 """
 Esta implementacion de Rule inicial tiene la limitacion que la discretizacion
@@ -50,6 +51,7 @@ class Rule(object):
         else:
             # Si se pasan padres a la regla entonces se crea una
             # regla crossover a partir de estos.
+            # TODO!!!
             pass
 
     @classmethod
@@ -84,7 +86,8 @@ class Rule(object):
 
         # La secuencia de largo True no deberia de ser mas larga que la mitad
         # de la secuencia total.
-        true_length = random.randrange(1, self.discrete_intervals/2)
+        # y tiene un minimo de 5
+        true_length = random.randrange(5, self.discrete_intervals/2)
 
         # Booleano que determina si se debe tomar la posicion como indice de
         # inicio o final de la secuencia de True's
@@ -92,11 +95,13 @@ class Rule(object):
         # Posicion (ya sea de inicio o final, depende de beginning_position)
         position = random.randrange(0, self.discrete_intervals)
 
+        #  print "From beginning:", beginning_position, ", position:", position, ", length:", true_length
+
         if beginning_position:
-            for i in range(position, min(true_length, self.discrete_intervals)):
+            for i in range(position, min(position + true_length, self.discrete_intervals)):
                 feature_list[i] = True
         else:
-            for i in range(max(0, position - true_length), min(position + true_length, self.discrete_intervals)):
+            for i in range(max(0, position - true_length), min(position, self.discrete_intervals)):
                 feature_list[i] = True
 
         return feature_list
@@ -119,11 +124,20 @@ class Rule(object):
                 # Si el valor == 1 entonces la posicion es la ultima.
                 value_pos = -1
 
-            # si nos encontramos con un valor False, devolvemos False.
+            # si nos encontramos con un valor False, devolvemos False, mirando
+            # el log, esto va a causar que pos no llegue a valores altos.
+            print "Valor #" + str(pos) + " con value:", value, "tiene pos: ", value_pos
+            #print values
+            #print self.features_lists
+            #print self.features_lists[pos]
+            self._print_features_list(self.features_lists[pos], pos=value_pos)
             if not self.features_lists[pos][value_pos]:
+                print " -- incorrecta."
                 return False
+            else:
+                print " -- correcta."
 
-        # Si no retorne False hasta entonces entonces es True.
+        # Si no devuelve False hasta entonces, es True.
         return True
 
     def mutate(self):
@@ -137,7 +151,7 @@ class Rule(object):
             - Aca pasamos la regla, el feature al cual le vamos a hacer el mutate se elige aleatoriamente?
             - No me queda claro la representacion de los mini-intervalos.
         """
-
+        return
         # Elijo aleatoriamente el feature al cual le voy a aplicar la mutacion
         feature = random.randint(0, len(self.features)-1)
 
@@ -145,7 +159,22 @@ class Rule(object):
         position = random.randint(0, self.discrete_intervals - 1)  # DUDA: por que vos usas el randrange si la posicion tiene que ser un entero?
 
         # Si el valor que voy a mutar es True entonces lo cambio a False
-        if self.feature_list[feature][position]:
-            self.feature_list[feature][position] = False
+        if self.features_lists[feature][position]:
+            self.features_lists[feature][position] = False
         else:  # Si el valor que voy a mutar es False entonces lo cambio a True
-            self.feature_list[feature][position] = True
+            self.features_lists[feature][position] = True
+
+    def print_rule(self):
+        for features_list in self.features_lists:
+            self._print_features_list(features_list)
+
+    def _print_features_list(self, features_list, pos=None):
+        for i in range(self.discrete_intervals):
+            if pos is not None and pos == i:
+                sys.stdout.write('@')
+            elif features_list[i]:
+                sys.stdout.write('+')
+            else:
+                sys.stdout.write('-')
+        print ""
+

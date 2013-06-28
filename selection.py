@@ -23,7 +23,9 @@ def roulette_wheel_selection(list_of_rules, num_select):
     """
     sum_fitness = 0
     for rule in list_of_rules:
-        sum_fitness += rule['fitness']
+        sum_fitness += rule['fitness'] + 0.5
+
+    print "sum_fitness", sum_fitness
 
     # El algoritmo no esta optimizado. Se podria calcular directamente
     # en el rango que cae.
@@ -32,7 +34,7 @@ def roulette_wheel_selection(list_of_rules, num_select):
         pick = random.uniform(0, sum_fitness)
         current = 0
         for rule in list_of_rules:
-            current += rule['fitness']
+            current += rule['fitness'] + 0.5
             if current > pick:
                 selected_rules.append(rule)
                 break
