@@ -96,7 +96,7 @@ class Rule(object):
             for i in range(position, min(true_length, self.discrete_intervals)):
                 feature_list[i] = True
         else:
-            for i in range(max(0, position - true_length), position + true_length):
+            for i in range(max(0, position - true_length), min(position + true_length, self.discrete_intervals)):
                 feature_list[i] = True
 
         return feature_list
