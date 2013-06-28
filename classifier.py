@@ -253,3 +253,15 @@ class Classifier(object):
                 song_data['values'][i] = (song_data['values'][i] - min_val) / max_min_diff
 
         return features, data, result_types
+
+    def load_rules(self, source):
+        """
+        Carga las reglas desde un archivo.
+        Sirve para poder persistir un entrenamiento a medio camino
+        y poder seguir ejecutando el train.
+        """
+    def save_rules(self, output):
+        """
+        Guarda las reglas en un archivo
+        """
+        pass
