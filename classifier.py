@@ -2,6 +2,7 @@
 import itertools
 import selection
 import random
+import csv
 from rule import Rule
 
 DEFAULT_DISCRETE_INTERVALS = 100
@@ -94,8 +95,10 @@ class Classifier(object):
         for song_data in self.data:
             song_is_type = rule.is_type(song_data['values'])
 
+            # si la regla es del tipo de la cancion y la evaluacion da positiva
             if result_type == song_data['result_type'] and song_is_type:
                 positive_results += 1
+            # si la regla no es del tipo de la cancion y la evaluacion da negativa
             elif result_type != song_data['result_type'] and not song_is_type:
                 positive_results += 1
 
@@ -172,13 +175,81 @@ class Classifier(object):
 
         return max_fitness, max_fitness_rule
 
-    def _read_source():
+    def _read_source(self):
         """
         Lee de la fuente de entrenamiento (csv) tres listas.
-        features: lista de los nombres de los features.
-        data: lista de dict (Maps) compuestos de:
-            'values': lista ordenada (mismo orden que features) de los valores
-            'result_type': tipo de resultado de esos valores.
-            'result_types': lista de los posibles tipos de valores de los resultados
+            - features: lista de los nombres de los features.
+            - data: lista de dict (Maps) compuestos de:
+                'values': lista ordenada (mismo orden que features) de los valores
+                'result_type': tipo de resultado de esos valores.
+                'song': nombre de la cancion
+            - result_types: lista de los posibles tipos de valores de los resultados
         """
-        return [], [], []
+        features = []
+        data = []
+        with open(self.source, 'r') as source:
+            reader = csv.DictReader(source)
+            header = reader.fieldnames
+            for value in header:
+                if value != 'song' and value != 'genre':
+                    features.append(value)
+
+            # para cada linea del csv creo un map de 'result_type', 'song' y 'values'
+            for source_line in reader:
+                # creo los values en el MISMO orden que los features
+                values = []
+                for feature in features:
+                    values.append(float(source_line[feature]))
+                song_data = {
+                    'result_type': source_line['genre'],
+                    'song': source_line['song'],
+                    'values': values
+                }
+                data.append(song_data)
+
+        """
+        Con la data creada primero obtengo la lista 'result_types'
+        Como quiero una lista sin repetidos (ya que para cada uno
+        se tiene una regla), se quitan los repetidos pasandolo a set
+        y de nuevo a lista.
+        """
+        result_types = []
+        for value in data:
+            result_types.append(value['result_type'])
+        result_types = list(set(result_types))
+
+        """
+        Tenemos que desnormalizar los valores, los vamos a setear desde 0 a 1.
+        para esto tenemos que conseguir el minimo y maximo de cada variable.
+        """
+        for i, feature in enumerate(features):
+            max_val = None
+            min_val = None
+
+            # Para cada feature buscamos todos los datos.
+            for song_data in data:
+                value = song_data['values'][i]
+                if max_val is None:
+                    max_val = value
+                else:
+                    max_val = max(value, max_val)
+
+                if min_val is None:
+                    min_val = value
+                else:
+                    min_val = min(value, min_val)
+
+            max_min_diff = max_val - min_val
+            """
+                              x - xMin
+            normalize(x) = --------------
+                             xMax - Xmin
+
+            Para cada valor del feature actual actualizamos el value para que
+            quede entre 0 y 1.
+            Esto genera que el maximo valor sea 1 y el minimo sea 0.
+            """
+            for song_data in data:
+                song_data['values'][i] = (song_data['values'][i] - min_val) / max_min_diff
+
+        return features, data, result_types
