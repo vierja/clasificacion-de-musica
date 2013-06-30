@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
+from __future__ import division
 import random
-import numpy as np
+try:
+    import numpy as np
+except ImportError:
+    import numpypy as np
 import sys
 
 """
@@ -32,9 +36,11 @@ class Rule(object):
         """
         super(Rule, self).__init__()
         self.features = features
+        self.features_len = len(features)
         self.discrete_intervals = discrete_intervals
         self.features_lists = []
         self.result_type = result_type
+        self.counter = [[0, 0] for i in self.features]  # Guarda la cantidad de exitos y errores en esta regla.
 
         if parent1 is None or parent2 is None:
             # La regla se representa como un map de listas
@@ -52,13 +58,32 @@ class Rule(object):
             # Si se pasan padres a la regla entonces se crea una
             # regla crossover a partir de estos.
             # TODO!!!
+            ### TMP
+            # half_interval = self.discrete_intervals / 2
+            # for num_feature, feature in enumerate(self.features):
+            #     feature_list = []
+            #     for i in range(self.discrete_intervals):
+            #         if i < half_interval:
+            #             feature_list.append(parent1.features_lists[num_feature][i])
+            #         else:
+            #             feature_list.append(parent2.features_lists[num_feature][i])
+
+            #     self.features_lists.append(feature_list)
+            ### TMP
+            ### TMP 2
+            for num_feature, feature in enumerate(self.features):
+                if random.choice([True, False]):
+                    self.features_lists.append(parent1.features_lists[num_feature])
+                else:
+                    self.features_lists.append(parent2.features_lists[num_feature])
+            ### TMP 2
             pass
 
     @classmethod
     def crossover(cls, parent1, parent2):
         return cls(parent1.features, parent1.discrete_intervals, parent1.result_type, parent1=parent1, parent2=parent2)
 
-    def _init_random_interval(self):
+    def _init_random_interval(self, minimum_length=10):
         """
         Devulve una lista de largo `discrete_intervals` con valores True o False.
         La idea es crear un intervalo que parezca una regla valida.
@@ -86,16 +111,14 @@ class Rule(object):
 
         # La secuencia de largo True no deberia de ser mas larga que la mitad
         # de la secuencia total.
-        # y tiene un minimo de 5
-        true_length = random.randrange(5, self.discrete_intervals/2)
+        # y tiene un minimo de 'minimum_length' (default: 10)
+        true_length = random.randint(minimum_length, self.discrete_intervals/2)
 
         # Booleano que determina si se debe tomar la posicion como indice de
         # inicio o final de la secuencia de True's
         beginning_position = random.choice([True, False])
         # Posicion (ya sea de inicio o final, depende de beginning_position)
-        position = random.randrange(0, self.discrete_intervals)
-
-        #  print "From beginning:", beginning_position, ", position:", position, ", length:", true_length
+        position = random.randint(0, self.discrete_intervals)
 
         if beginning_position:
             for i in range(position, min(position + true_length, self.discrete_intervals)):
@@ -106,13 +129,16 @@ class Rule(object):
 
         return feature_list
 
-    def is_type(self, values):
+    def is_type(self, values, is_type):
         """
         Devuelve True o False dependiendo si los valores se encuentran dentro
         de las reglas especificadas.
         Los values deben estar normalizados de 0 a 1.
         """
         interval = (1.0/(self.discrete_intervals - 1))
+
+        correct_values = 0
+        incorrect_values = 0
 
         for pos, value in enumerate(values):
             if value != 1:
@@ -124,21 +150,24 @@ class Rule(object):
                 # Si el valor == 1 entonces la posicion es la ultima.
                 value_pos = -1
 
-            # si nos encontramos con un valor False, devolvemos False, mirando
-            # el log, esto va a causar que pos no llegue a valores altos.
-            print "Valor #" + str(pos) + " con value:", value, "tiene pos: ", value_pos
-            #print values
-            #print self.features_lists
-            #print self.features_lists[pos]
-            self._print_features_list(self.features_lists[pos], pos=value_pos)
-            if not self.features_lists[pos][value_pos]:
-                print " -- incorrecta."
-                return False
+            if self.features_lists[pos][value_pos]:
+                correct_values += 1
+                if is_type:
+                    # Si la regla es positiva y es de tipo correcto
+                    self.counter[pos][0] += 1
+                else:
+                    # Si la regla es positiva y NO es de tipo correcto
+                    self.counter[pos][1] += 1
             else:
-                print " -- correcta."
+                incorrect_values += 1
+                if is_type:
+                    # Si la regla es negativa y es de tipo correcto
+                    self.counter[pos][1] += 1
+                else:
+                    # Si la regla es negativa y NO es de tipo correcto.
+                    self.counter[pos][0] += 1
 
-        # Si no devuelve False hasta entonces, es True.
-        return True
+        return correct_values, incorrect_values
 
     def mutate(self):
         """
@@ -151,9 +180,66 @@ class Rule(object):
             - Aca pasamos la regla, el feature al cual le vamos a hacer el mutate se elige aleatoriamente?
             - No me queda claro la representacion de los mini-intervalos.
         """
+        ### PRUEBA
+        NEW_RANDOM, INCREASE, DECREASE = 1, 2, 3
+        action = random.choice([NEW_RANDOM, INCREASE, DECREASE])
+        mutated_features = []
+        num_to_mutate = random.randint(1, self.features_len)
+        while len(mutated_features) < num_to_mutate:
+            feature_pos = random.randint(0, self.features_len - 1)
+            if not feature_pos in mutated_features:
+                mutated_features.append(feature_pos)
+
+                if action == NEW_RANDOM:
+                    self.features_lists[feature_pos] = self._init_random_interval()
+
+                elif action == INCREASE:
+                    """
+                    Para esta accion si un intervalo tiene dos partes entonces
+                    se incrementa la primera parte del primero y la ultima
+                    parte del ultimo.
+                    Si alguno de los dos coinciden con el final entonces ese
+                    no se incrementa.
+                    """
+                    # Elijo al azar cuanto se va a incrementar el intervalo.
+                    increase_size = random.randint(1, 5)
+                    # Listo las posiciones de True de la lista.
+                    true_interval_positions = [i for i in range(self.discrete_intervals) if self.features_lists[feature_pos][i]]
+
+                    if len(true_interval_positions) < 1:
+                        continue
+                    # Expando el intervalo de la primera parte.
+                    if true_interval_positions[0] > 0:
+                        for i in range(max(0, true_interval_positions[0] - increase_size), true_interval_positions[0]):
+                            self.features_lists[feature_pos][i] = True
+                    # Expando el intervalo de la ultima parte.
+                    if true_interval_positions[-1] < self.discrete_intervals:
+                        for i in range(true_interval_positions[-1] + 1, min(self.discrete_intervals - 1, true_interval_positions[-1] + increase_size)):
+                            self.features_lists[feature_pos][i] = True
+                elif action == DECREASE:
+                    decrease_size = random.randint(1, 5)
+                    true_interval_positions = [i for i in range(self.discrete_intervals) if self.features_lists[feature_pos][i]]
+                    if len(true_interval_positions) < decrease_size * 2:
+                        continue
+                    # Disminuyo el intervalo de la primera parte
+                    # print "true_interval_positions", true_interval_positions, "decrease_size", decrease_size
+                    for i in range(true_interval_positions[0], true_interval_positions[0] + decrease_size):
+                        self.features_lists[feature_pos][i] = False
+                    # Disminuyo el intervalo de la segunda parte
+                    for i in range(true_interval_positions[-1] - decrease_size + 1, true_interval_positions[0] - 1):
+                        self.features_lists[feature_pos][i] = False
+
         return
+        ###
+
+        ### PARA PROBAR. TODO: SACAR >
+        for i, _ in enumerate(self.features_lists):
+            self.features_lists[1] = self._init_random_interval()
+        return
+        ### < SACAR
+
         # Elijo aleatoriamente el feature al cual le voy a aplicar la mutacion
-        feature = random.randint(0, len(self.features)-1)
+        feature = random.randint(0, self.features_len - 1)
 
         # Elijo aleatoriamente intervalo que voy a mutar
         position = random.randint(0, self.discrete_intervals - 1)  # DUDA: por que vos usas el randrange si la posicion tiene que ser un entero?
@@ -165,6 +251,8 @@ class Rule(object):
             self.features_lists[feature][position] = True
 
     def print_rule(self):
+        print "Feature list size: ", self.features_len
+        print "Counter:", self.counter
         for features_list in self.features_lists:
             self._print_features_list(features_list)
 
@@ -177,4 +265,3 @@ class Rule(object):
             else:
                 sys.stdout.write('-')
         print ""
-

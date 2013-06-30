@@ -2,6 +2,8 @@
 import random
 
 ROULETTE_WHEEL_SELECTION = 1
+RANK_SELECTION = 2
+TOURNAMENT_SELECTION = 3
 
 
 def roulette_wheel_selection(list_of_rules, num_select):
@@ -20,25 +22,29 @@ def roulette_wheel_selection(list_of_rules, num_select):
     selected_rule = r3
 
     La seleccion se repite hasta tener `num_select` reglas.
+    Cada regla se le agrega 0.2 de fitness para poder ser seleccionada
+    aunque falle.
     """
     sum_fitness = 0
     for rule in list_of_rules:
-        sum_fitness += rule['fitness'] + 0.5
-
-    print "sum_fitness", sum_fitness
+        sum_fitness += rule['fitness'][0] + 0.1
 
     # El algoritmo no esta optimizado. Se podria calcular directamente
     # en el rango que cae.
+    # Tambien actualmente permite que se elija dos veces la misma regla
+    # no se si esto esta permitido.
     selected_rules = []
     while len(selected_rules) < num_select:
         pick = random.uniform(0, sum_fitness)
         current = 0
         for rule in list_of_rules:
-            current += rule['fitness'] + 0.5
+            current += rule['fitness'][0] + 0.1
             if current > pick:
                 selected_rules.append(rule)
                 break
 
+    # print "list_of_rules", [rule['fitness'] for rule in list_of_rules]
+    # print "selected_rules:", [rule['fitness'] for rule in selected_rules]
     return selected_rules
 
 
@@ -49,13 +55,12 @@ def rank_selection(list_of_rules, num_select):
     y se seleccionan las mejores 'num_select'.
     """
     selected_rules = []
-    if num_select <= len(list_of_rules):  # Este control creo que no es necesario pero por las dudas
-        # Ordeno primero las reglas por su valor de fitness
-        order_rules = sorted(list_of_rules, key=lambda rule: rule['fitness'], reverse=True)
-        # Selecciono las mejores 'num_select'
-        selected_rules = order_rules[:num_select]
+    # Ordeno primero las reglas por su valor de fitness
+    order_rules = sorted(list_of_rules, key=lambda rule: rule['fitness'], reverse=True)
+    # Selecciono las mejores 'num_select'
+    selected_rules = order_rules[:num_select]
 
-        return selected_rules
+    return selected_rules
 
 
 # Para el tournament selection se necesitan 2 parametros. Cambiar luego _select_rules en classifier.py
