@@ -36,11 +36,11 @@ class Rule(object):
         """
         super(Rule, self).__init__()
         self.features = features
-        self.features_len = len(features)
+        self.features_len = len(self.features)
         self.discrete_intervals = discrete_intervals
         self.features_lists = []
         self.result_type = result_type
-        self.counter = [[0, 0] for i in self.features]  # Guarda la cantidad de exitos y errores en esta regla.
+        self.stats = [[0, 0] for i in self.features]  # Guarda la cantidad de exitos y errores en esta regla.
 
         if parent1 is None or parent2 is None:
             # La regla se representa como un map de listas
@@ -154,18 +154,18 @@ class Rule(object):
                 correct_values += 1
                 if is_type:
                     # Si la regla es positiva y es de tipo correcto
-                    self.counter[pos][0] += 1
+                    self.stats[pos][0] += 1
                 else:
                     # Si la regla es positiva y NO es de tipo correcto
-                    self.counter[pos][1] += 1
+                    self.stats[pos][1] += 1
             else:
                 incorrect_values += 1
                 if is_type:
                     # Si la regla es negativa y es de tipo correcto
-                    self.counter[pos][1] += 1
+                    self.stats[pos][1] += 1
                 else:
                     # Si la regla es negativa y NO es de tipo correcto.
-                    self.counter[pos][0] += 1
+                    self.stats[pos][0] += 1
 
         return correct_values, incorrect_values
 
@@ -180,15 +180,27 @@ class Rule(object):
             - Aca pasamos la regla, el feature al cual le vamos a hacer el mutate se elige aleatoriamente?
             - No me queda claro la representacion de los mini-intervalos.
         """
+
         ### PRUEBA
+        """
+        Se tienen 3 posibles acciones
+        - NEW_RANDOM
+            Se crea un nuevo interval random desde cero.
+        - INCREASE
+            Se incrementa el intervalo de determinado feature.
+        - DECREASE
+            Se decrementa el intervalo de determinado feature.
+        """
         NEW_RANDOM, INCREASE, DECREASE = 1, 2, 3
-        action = random.choice([NEW_RANDOM, INCREASE, DECREASE])
         mutated_features = []
         num_to_mutate = random.randint(1, self.features_len)
         while len(mutated_features) < num_to_mutate:
             feature_pos = random.randint(0, self.features_len - 1)
             if not feature_pos in mutated_features:
                 mutated_features.append(feature_pos)
+
+                # Elijo la accion a tomar.
+                action = random.choice([NEW_RANDOM, INCREASE, DECREASE])
 
                 if action == NEW_RANDOM:
                     self.features_lists[feature_pos] = self._init_random_interval()
@@ -216,6 +228,7 @@ class Rule(object):
                     if true_interval_positions[-1] < self.discrete_intervals:
                         for i in range(true_interval_positions[-1] + 1, min(self.discrete_intervals - 1, true_interval_positions[-1] + increase_size)):
                             self.features_lists[feature_pos][i] = True
+
                 elif action == DECREASE:
                     decrease_size = random.randint(1, 5)
                     true_interval_positions = [i for i in range(self.discrete_intervals) if self.features_lists[feature_pos][i]]
@@ -229,30 +242,23 @@ class Rule(object):
                     for i in range(true_interval_positions[-1] - decrease_size + 1, true_interval_positions[0] - 1):
                         self.features_lists[feature_pos][i] = False
 
+                # Luego de la mutacion resteo las estadisticas
+                self.stats[feature_pos] = [0, 0]
         return
         ###
-
-        ### PARA PROBAR. TODO: SACAR >
-        for i, _ in enumerate(self.features_lists):
-            self.features_lists[1] = self._init_random_interval()
-        return
-        ### < SACAR
 
         # Elijo aleatoriamente el feature al cual le voy a aplicar la mutacion
         feature = random.randint(0, self.features_len - 1)
 
         # Elijo aleatoriamente intervalo que voy a mutar
-        position = random.randint(0, self.discrete_intervals - 1)  # DUDA: por que vos usas el randrange si la posicion tiene que ser un entero?
+        position = random.randint(0, self.discrete_intervals - 1)
 
-        # Si el valor que voy a mutar es True entonces lo cambio a False
-        if self.features_lists[feature][position]:
-            self.features_lists[feature][position] = False
-        else:  # Si el valor que voy a mutar es False entonces lo cambio a True
-            self.features_lists[feature][position] = True
+        # Si el valor que voy a mutar es True entonces lo cambio a False y si es False a True
+        self.features_lists[feature][position] = not self.features_lists[feature][position]
 
     def print_rule(self):
         print "Feature list size: ", self.features_len
-        print "Counter:", self.counter
+        print "Counter:", self.stats
         for features_list in self.features_lists:
             self._print_features_list(features_list)
 

@@ -24,6 +24,7 @@ class Classifier(object):
         self.source = source
         self.discrete_intervals = discrete_intervals
         self.features, self.data, self.result_types = self._read_source()
+        self.len_features = len(self.features)
         self.len_data = len(self.data)
         self.size_rule_generation = size_rule_generation
         self.len_rules = len(self.result_types)
@@ -56,9 +57,10 @@ class Classifier(object):
         total_fitness = 0
         generation = 0
         best_rules = {}
+        total_best = dict((rule_name, 0) for rule_name, _ in self.rules.items())
 
         # itero hasta tener un fitness total mayor al especificado.
-        while min_fitness > total_fitness and generation < 1000000:
+        while min_fitness > total_fitness and generation < 500000:
             max_fitness_list = []
             generation += 1
 
@@ -69,6 +71,8 @@ class Classifier(object):
                 # modifica la lista
                 self._mutate(list_of_rules)
                 max_fitness, best_rule = self._evaluate_fitness(list_of_rules)
+                if max_fitness[0] > total_best[rule_name]:
+                    total_best[rule_name] = max_fitness[0]
                 # Se guarda el max_fitness para comparar rapidamente.
                 if generation % 100000 == 0:
                     print "Best", rule_name, "rule of generation", generation, ", fitness:", max_fitness, ". Rule:"
@@ -85,19 +89,23 @@ class Classifier(object):
             # todas las reglas.
             total_fitness = min(max_fitness_list)
 
-            #print "Generation", generation, ", max_fitness_list = ", max_fitness_list
-
         self.best_rules = best_rules
+
+        print "Total best:", total_best
 
         return total_fitness
 
     def _rule_fitness(self, rule):
         """
-        Si una cancion es del tipo que se prueba la regla, y la regla devuelve
-        positiva entonces se suma 1
-        Si una cancion NO es del tipo que se prueba en la regla y la regla
-        devuelve negativa entonces se suma 1
-        en el resto de los casos no se suma.
+        La regla devuelve la cantidad de resultados positivos y la cantidad de
+        resultados negativos.
+        Los resultados positivos son la cantidad de sub-reglas que devuelven
+        True dentro de la regla.
+        Los resultados negativos son la cantidad de sub-reglas que devuelven
+        False dentro de la regla.
+        Las sub-reglas son los intervalos de features dentro de cada regla.
+        La cantidad de resultados positivos mas la cantidad de resultados
+        negativos debe de ser igual al total de features.
         """
         # guarda los resultados positivos.
         correct_results = 0
@@ -118,7 +126,9 @@ class Classifier(object):
                 correct_results += negative_values
                 incorrect_results += positive_values
 
-        return correct_results / self.len_data, incorrect_results / self.len_data
+        # (a + b + c + d) / (len_data * num_features) == (a/num_features + b/num_features + c/num_features + d/num_features) / len_data
+        # entonces para optimizar divido por num_features despues.
+        return correct_results / (self.len_data * self.len_features), incorrect_results / (self.len_data * self.len_features)
 
     def _select_rules(self, list_of_rules, num_select, type=selection.ROULETTE_WHEEL_SELECTION):
         """
@@ -127,7 +137,7 @@ class Classifier(object):
         tecnica.
 
         Puede ser:
-            Roulette wheel selection
+            Roulette wheel selection (default)
             Rank selection
             Tournament selection
         """
@@ -157,9 +167,7 @@ class Classifier(object):
         10 en total se crean hijos a partir de las combinaciones de 4 tomadas
         de a dos (6) y se lo suma a los padres para un total de 10.
         """
-        #print "len(list_of_rules)", len(list_of_rules)
         combinations = [x for x in itertools.combinations(list_of_rules, 2)]
-        # assert len(combinations) == 2 TODO: porque puse esto?!?!!
         # Uso itertools.combinations para crear sets de combinaciones de las reglas.
         for rule1, rule2 in combinations:
             new_rule = Rule.crossover(rule1['rule'], rule2['rule'])
@@ -168,7 +176,7 @@ class Classifier(object):
 
         return list_of_rules
 
-    def _mutate(self, list_of_rules, mutation_probability=0.05):
+    def _mutate(self, list_of_rules, mutation_probability=0.10):
         """
         Muta algunas reglas de las reglas en la lista `list_of_rules`.
 
@@ -186,11 +194,13 @@ class Classifier(object):
         fitness.
         Devuelve el maximo valor de fitness obtenido.
         """
-        max_fitness = -1
+        max_fitness_val = -1
         max_fitness_rule = None
+        max_fitness = None
         for rule in list_of_rules:
             rule['fitness'] = self._rule_fitness(rule['rule'])
-            if rule['fitness'][0] > max_fitness:
+            if rule['fitness'][0] > max_fitness_val:
+                max_fitness_val = rule['fitness'][0]
                 max_fitness = rule['fitness']
                 max_fitness_rule = rule['rule']
 

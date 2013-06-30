@@ -33,7 +33,11 @@ def get_top_tag(filename):
     full_url = API_ENDPOINT + '?' + url_values
     response = urllib2.urlopen(full_url)
     data = json.load(response)
-    return data["track"]["toptags"]["tag"][0]["name"]
+    try:
+        top_tag = data["track"]["toptags"]["tag"][0]["name"]
+        return top_tag
+    except:
+        return "unknown"
 
 if __name__ == '__main__':
     print get_top_tag("The Beatles - Yellow Submarine.mp3") == 'classic rock'
