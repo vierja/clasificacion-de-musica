@@ -24,39 +24,46 @@ num_frames_song = 10
 
 
 def get_features(filename, feature_plan):
-    process = subprocess.Popen(["python", "/usr/bin/yaafe.py", "-r", "44100", "-b", tmp_directory, "-c", feature_plan, filename], stdout=subprocess.PIPE)
-    stdout, err = process.communicate()
-    print err
-    print stdout
+    retries = 0
+    while retries < 4:
+        try:
+            process = subprocess.Popen(["python", "/usr/bin/yaafe.py", "-r", "44100", "-b", tmp_directory, "-c", feature_plan, filename], stdout=subprocess.PIPE)
+            stdout, err = process.communicate()
+            print err
+            print stdout
 
-    num_frames = 0
-    frames = []
+            num_frames = 0
+            frames = []
 
-    genre = get_top_tag(basename(filename))
+            genre = get_top_tag(basename(filename))
 
-    features_list = {"song": [filename] * num_frames_song, "genre": [genre] * num_frames_song}
+            features_list = {"song": [filename] * num_frames_song, "genre": [genre] * num_frames_song}
 
-    for feature_name, short_name in features.items():
-        csv_filename = join(tmp_directory, filename + "." + short_name + ".csv")
-        if num_frames == 0:
-            process = subprocess.Popen(['wc', '-l', csv_filename], stdout=subprocess.PIPE)
-            num_frames, err = process.communicate()
-            num_frames = num_frames.split(' ')[0]
-            frames = random.sample(xrange(int(num_frames)), num_frames_song)
+            for feature_name, short_name in features.items():
+                csv_filename = join(tmp_directory, filename + "." + short_name + ".csv")
+                if num_frames == 0:
+                    process = subprocess.Popen(['wc', '-l', csv_filename], stdout=subprocess.PIPE)
+                    num_frames, err = process.communicate()
+                    num_frames = num_frames.split(' ')[0]
+                    frames = random.sample(xrange(int(num_frames)), num_frames_song)
 
-        values = read_lines(csv_filename, frames)
-        if feature_name == 'SpectralShapeStatistics':
-            # el value trae una lista de 4 elements y queremos 4 listas de cada elemento.
-            # haciendo zip(*) del split nos quedamos con tuplas (sets) despues los pasamos a list
-            list_of_values = [list(a) for a in zip(*[value.split(',') for value in values])]
-            features_list["centroid"] = list_of_values[0]
-            features_list["spread"] = list_of_values[1]
-            features_list["skewness"] = list_of_values[2]
-            features_list["kurtosis"] = list_of_values[3]
-        else:
-            features_list[short_name] = values
+                values = read_lines(csv_filename, frames)
+                if feature_name == 'SpectralShapeStatistics':
+                    # el value trae una lista de 4 elements y queremos 4 listas de cada elemento.
+                    # haciendo zip(*) del split nos quedamos con tuplas (sets) despues los pasamos a list
+                    list_of_values = [list(a) for a in zip(*[value.split(',') for value in values])]
+                    features_list["centroid"] = list_of_values[0]
+                    features_list["spread"] = list_of_values[1]
+                    features_list["skewness"] = list_of_values[2]
+                    features_list["kurtosis"] = list_of_values[3]
+                else:
+                    features_list[short_name] = values
 
-    return features_list
+            return features_list
+        except Exception, e:
+            print "Error processing", filename
+            print e
+            retries += 1
 
 
 def read_lines(filename, list_of_lines):
@@ -127,11 +134,11 @@ def main():
 
     for filename in list_of_files:
         features = get_features(filename, feature_plan)
-        list_of_map_features += [features]
+        if features:
+            list_of_map_features += [features]
 
     save_features_csv(list_of_map_features, args['output'])
 
 
 if __name__ == '__main__':
     main()
-
