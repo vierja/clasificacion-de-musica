@@ -55,28 +55,11 @@ class Rule(object):
             for feature in self.features:
                 self.features_lists.append(self._init_random_interval())
         else:
-            # Si se pasan padres a la regla entonces se crea una
-            # regla crossover a partir de estos.
-            # TODO!!!
-            ### TMP
-            # half_interval = self.discrete_intervals / 2
-            # for num_feature, feature in enumerate(self.features):
-            #     feature_list = []
-            #     for i in range(self.discrete_intervals):
-            #         if i < half_interval:
-            #             feature_list.append(parent1.features_lists[num_feature][i])
-            #         else:
-            #             feature_list.append(parent2.features_lists[num_feature][i])
-
-            #     self.features_lists.append(feature_list)
-            ### TMP
-            ### TMP 2
             for num_feature, feature in enumerate(self.features):
                 if random.choice([True, False]):
                     self.features_lists.append(parent1.features_lists[num_feature])
                 else:
                     self.features_lists.append(parent2.features_lists[num_feature])
-            ### TMP 2
             pass
 
     @classmethod
@@ -181,7 +164,6 @@ class Rule(object):
             - No me queda claro la representacion de los mini-intervalos.
         """
 
-        ### PRUEBA
         """
         Se tienen 3 posibles acciones
         - NEW_RANDOM
@@ -245,16 +227,15 @@ class Rule(object):
                 # Luego de la mutacion resteo las estadisticas
                 self.stats[feature_pos] = [0, 0]
         return
-        ###
 
-        # Elijo aleatoriamente el feature al cual le voy a aplicar la mutacion
-        feature = random.randint(0, self.features_len - 1)
+        # # Elijo aleatoriamente el feature al cual le voy a aplicar la mutacion
+        # feature = random.randint(0, self.features_len - 1)
 
-        # Elijo aleatoriamente intervalo que voy a mutar
-        position = random.randint(0, self.discrete_intervals - 1)
+        # # Elijo aleatoriamente intervalo que voy a mutar
+        # position = random.randint(0, self.discrete_intervals - 1)
 
-        # Si el valor que voy a mutar es True entonces lo cambio a False y si es False a True
-        self.features_lists[feature][position] = not self.features_lists[feature][position]
+        # # Si el valor que voy a mutar es True entonces lo cambio a False y si es False a True
+        # self.features_lists[feature][position] = not self.features_lists[feature][position]
 
     def print_rule(self):
         print "Feature list size: ", self.features_len

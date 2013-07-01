@@ -1,0 +1,221 @@
+skewness,song,spectral_rolloff,energy,spread,centroid,zcr,genre,kurtosis
+1.529044e+00,electronic_vs_classical/01 - Give life back to music (1).mp3,5.396759e+03,2.106516e-01,2.511777e+03,2.199941e+03,7.165527e-02,electronic,-6.019736e+00
+1.294100e+00,electronic_vs_classical/01 - Give life back to music (1).mp3,5.324084e+03,1.856503e-01,3.053808e+03,2.508480e+03,3.274536e-02,electronic,-5.984111e+00
+1.330716e+00,electronic_vs_classical/01 - Give life back to music (1).mp3,4.071121e+03,2.122151e-01,3.403409e+03,2.566095e+03,3.341675e-02,electronic,-4.785612e+00
+1.449505e+00,electronic_vs_classical/01 - Give life back to music (1).mp3,5.369843e+03,1.844831e-01,3.166194e+03,2.583864e+03,5.426025e-02,electronic,-5.559343e+00
+2.277127e+00,electronic_vs_classical/01 - Give life back to music (1).mp3,2.769708e+03,2.005748e-01,2.554336e+03,1.658082e+03,3.967285e-02,electronic,1.091266e+00
+1.364623e+00,electronic_vs_classical/01 - Give life back to music (1).mp3,5.044153e+03,1.788381e-01,2.946292e+03,2.411180e+03,3.894043e-02,electronic,-5.615275e+00
+9.829980e-01,electronic_vs_classical/01 - Give life back to music (1).mp3,1.199399e+04,1.893335e-01,3.086255e+03,3.339126e+03,9.237671e-02,electronic,-1.528509e+01
+1.111015e+00,electronic_vs_classical/01 - Give life back to music (1).mp3,6.006418e+03,2.138989e-01,3.558033e+03,2.953561e+03,2.859497e-02,electronic,-7.032633e+00
+1.734539e+00,electronic_vs_classical/01 - Give life back to music (1).mp3,8.936279e+02,1.792449e-01,2.917849e+03,1.943405e+03,1.324463e-02,electronic,-1.674629e+00
+8.766056e-01,electronic_vs_classical/01 - Give life back to music (1).mp3,9.533826e+03,7.599184e-02,3.620510e+03,3.312577e+03,2.813721e-02,electronic,-9.726117e+00
+1.236036e+00,electronic_vs_classical/08 - Get lucky.mp3,5.275635e+03,2.016744e-01,3.510570e+03,2.717310e+03,2.319336e-02,electronic,-5.483207e+00
+9.247221e-01,electronic_vs_classical/08 - Get lucky.mp3,9.073553e+03,2.290419e-01,3.500897e+03,3.115960e+03,9.777832e-02,electronic,-8.886349e+00
+1.662498e+00,electronic_vs_classical/08 - Get lucky.mp3,3.920389e+03,2.649444e-01,3.009722e+03,2.198234e+03,4.861450e-02,electronic,-3.113162e+00
+1.425227e+00,electronic_vs_classical/08 - Get lucky.mp3,6.497644e+03,2.161600e-01,3.196902e+03,2.481614e+03,3.939819e-02,electronic,-4.872523e+00
+2.152699e-01,electronic_vs_classical/08 - Get lucky.mp3,1.398178e+04,1.441773e-01,3.380904e+03,4.688853e+03,1.319275e-01,electronic,-3.476641e+01
+7.728993e-01,electronic_vs_classical/08 - Get lucky.mp3,1.205186e+04,1.420010e-01,3.592343e+03,3.491334e+03,8.712769e-02,electronic,-1.176045e+01
+1.027151e+00,electronic_vs_classical/08 - Get lucky.mp3,8.369687e+03,2.153393e-01,3.412232e+03,2.908914e+03,5.554199e-02,electronic,-7.731073e+00
+1.013648e+00,electronic_vs_classical/08 - Get lucky.mp3,1.016771e+04,2.063140e-01,3.526045e+03,3.055206e+03,5.041504e-02,electronic,-8.193511e+00
+1.346179e+00,electronic_vs_classical/08 - Get lucky.mp3,4.691547e+03,1.732415e-01,3.171985e+03,2.476036e+03,4.901123e-02,electronic,-5.162419e+00
+1.490328e+00,electronic_vs_classical/08 - Get lucky.mp3,3.995755e+03,1.569814e-01,3.213593e+03,2.369517e+03,4.876709e-02,electronic,-3.912335e+00
+6.754576e+00,electronic_vs_classical/08-beethoven-emperor-atm.mp3,1.588074e+03,1.952796e-02,1.095738e+03,7.866502e+02,2.938843e-02,classical,5.880625e+01
+3.268949e+00,electronic_vs_classical/08-beethoven-emperor-atm.mp3,3.425125e+03,5.460212e-02,1.361335e+03,1.188335e+03,4.898071e-02,classical,7.639557e+00
+4.476251e+00,electronic_vs_classical/08-beethoven-emperor-atm.mp3,2.121021e+03,2.428716e-02,1.197356e+03,9.621022e+02,3.497314e-02,classical,2.568835e+01
+3.300841e+00,electronic_vs_classical/08-beethoven-emperor-atm.mp3,1.892230e+03,6.714805e-02,1.506942e+03,1.171297e+03,3.668213e-02,classical,7.779051e+00
+4.910824e+00,electronic_vs_classical/08-beethoven-emperor-atm.mp3,1.763031e+03,2.229038e-02,1.177164e+03,1.074972e+03,4.293823e-02,classical,2.892161e+01
+4.982865e+00,electronic_vs_classical/08-beethoven-emperor-atm.mp3,1.843781e+03,4.220574e-02,1.020632e+03,9.023867e+02,3.707886e-02,classical,3.112149e+01
+4.022191e+00,electronic_vs_classical/08-beethoven-emperor-atm.mp3,1.892230e+03,4.275591e-02,1.146793e+03,9.465750e+02,2.755737e-02,classical,1.747024e+01
+5.571727e+00,electronic_vs_classical/08-beethoven-emperor-atm.mp3,1.419846e+03,3.052290e-02,1.032932e+03,9.220430e+02,4.364014e-02,classical,4.145804e+01
+3.965868e+00,electronic_vs_classical/08-beethoven-emperor-atm.mp3,1.892230e+03,6.779417e-02,1.230017e+03,9.592328e+02,3.121948e-02,classical,1.602455e+01
+4.186674e+00,electronic_vs_classical/08-beethoven-emperor-atm.mp3,7.038666e+02,4.894812e-03,2.328120e+03,9.051439e+02,1.461792e-02,classical,1.686695e+01
+2.440755e+00,electronic_vs_classical/10 - Motherboard.mp3,1.052435e+03,1.729354e-01,2.464502e+03,1.444131e+03,1.940918e-02,electronic,2.736891e+00
+3.113908e+00,electronic_vs_classical/10 - Motherboard.mp3,9.999481e+02,2.412185e-01,2.209830e+03,1.058064e+03,1.217651e-02,electronic,7.960174e+00
+1.797645e+00,electronic_vs_classical/10 - Motherboard.mp3,3.628345e+03,8.922820e-02,2.553483e+03,1.835695e+03,3.231812e-02,electronic,-2.081064e+00
+1.917454e+00,electronic_vs_classical/10 - Motherboard.mp3,1.500595e+03,1.079168e-01,2.783069e+03,1.889116e+03,2.420044e-02,electronic,-1.158510e+00
+5.352730e+00,electronic_vs_classical/10 - Motherboard.mp3,5.867798e+02,1.982962e-01,1.434356e+03,5.443419e+02,1.470947e-02,electronic,3.039239e+01
+3.406421e+00,electronic_vs_classical/10 - Motherboard.mp3,7.334747e+02,2.044178e-01,1.954358e+03,8.843669e+02,1.116943e-02,electronic,1.059721e+01
+1.302427e+00,electronic_vs_classical/10 - Motherboard.mp3,6.664526e+03,3.154483e-02,2.485453e+03,2.605332e+03,4.977417e-02,electronic,-1.239694e+01
+4.092153e+00,electronic_vs_classical/10 - Motherboard.mp3,9.703400e+02,3.507683e-02,1.765186e+03,7.972783e+02,1.803589e-02,electronic,1.646776e+01
+1.247445e+00,electronic_vs_classical/10 - Motherboard.mp3,8.209534e+03,1.241895e-01,2.950267e+03,2.578349e+03,6.317139e-02,electronic,-7.593977e+00
+1.445389e+00,electronic_vs_classical/10 - Motherboard.mp3,5.287747e+03,1.534430e-01,2.892578e+03,2.170233e+03,4.302979e-02,electronic,-4.270586e+00
+4.258844e+00,electronic_vs_classical/07 - Touch.mp3,1.612299e+03,1.732593e-01,1.540754e+03,7.572561e+02,2.304077e-02,electronic,1.666362e+01
+9.082216e-01,electronic_vs_classical/07 - Touch.mp3,4.005176e+03,1.307685e-01,3.752994e+03,3.410293e+03,3.332520e-02,electronic,-9.612262e+00
+1.282657e+00,electronic_vs_classical/07 - Touch.mp3,2.738754e+03,1.439132e-01,3.483866e+03,2.809879e+03,3.192139e-02,electronic,-6.066996e+00
+1.151397e+00,electronic_vs_classical/07 - Touch.mp3,6.258087e+02,9.971922e-02,3.674132e+03,2.699178e+03,2.047729e-02,electronic,-5.137626e+00
+8.418978e-01,electronic_vs_classical/07 - Touch.mp3,1.130224e+04,2.031729e-01,3.724196e+03,3.513146e+03,4.235840e-02,electronic,-1.072123e+01
+6.996266e+00,electronic_vs_classical/07 - Touch.mp3,1.488483e+03,1.080453e-01,8.671982e+02,5.168999e+02,2.127075e-02,electronic,7.128267e+01
+1.937018e+00,electronic_vs_classical/07 - Touch.mp3,1.005331e+03,1.753275e-01,2.827611e+03,1.705364e+03,3.628540e-02,electronic,-2.375905e-01
+1.918030e+00,electronic_vs_classical/07 - Touch.mp3,1.312180e+03,2.256989e-01,2.797133e+03,1.737722e+03,2.688599e-02,electronic,-5.148825e-01
+9.950778e-01,electronic_vs_classical/07 - Touch.mp3,9.182565e+03,1.359821e-01,3.258514e+03,3.097787e+03,4.794312e-02,electronic,-1.047469e+01
+1.413920e+00,electronic_vs_classical/07 - Touch.mp3,2.258295e+03,2.341791e-01,3.089552e+03,2.250703e+03,2.847290e-02,electronic,-4.038151e+00
+3.841666e+00,electronic_vs_classical/13 - Contact.mp3,2.764325e+03,1.030524e-01,1.162193e+03,1.247401e+03,4.785156e-02,electronic,1.006295e+01
+3.014695e+00,electronic_vs_classical/13 - Contact.mp3,3.325534e+03,1.595480e-01,1.272116e+03,1.080965e+03,3.900146e-02,electronic,6.834329e+00
+3.266638e+00,electronic_vs_classical/13 - Contact.mp3,1.876080e+03,1.810034e-01,1.444546e+03,9.927775e+02,2.966309e-02,electronic,9.663670e+00
+1.907741e+00,electronic_vs_classical/13 - Contact.mp3,4.154562e+03,1.568506e-01,2.378050e+03,2.071358e+03,4.928589e-02,electronic,-4.528978e+00
+8.865534e-01,electronic_vs_classical/13 - Contact.mp3,1.120265e+04,2.189818e-01,3.333546e+03,3.256439e+03,7.421875e-02,electronic,-1.160676e+01
+1.427932e+00,electronic_vs_classical/13 - Contact.mp3,5.262177e+03,2.601496e-01,2.773017e+03,2.303408e+03,4.428101e-02,electronic,-5.692414e+00
+1.165639e+00,electronic_vs_classical/13 - Contact.mp3,7.634866e+03,2.940578e-01,3.283998e+03,2.905085e+03,6.335449e-02,electronic,-8.148096e+00
+1.051831e+00,electronic_vs_classical/13 - Contact.mp3,1.120803e+04,2.353776e-01,3.365163e+03,3.174228e+03,1.052246e-01,electronic,-1.014640e+01
+1.181583e+00,electronic_vs_classical/13 - Contact.mp3,1.189709e+04,2.487531e-01,3.138901e+03,3.111436e+03,1.050110e-01,electronic,-1.126040e+01
+1.546985e+00,electronic_vs_classical/13 - Contact.mp3,4.779025e+03,2.957235e-01,2.766951e+03,2.331843e+03,4.132080e-02,electronic,-5.631661e+00
+4.209995e+00,electronic_vs_classical/01-beethoven-symphony_nr_5-atm.mp3,1.181635e+03,1.622418e-02,1.852875e+03,1.152690e+03,2.468872e-02,classical,1.794089e+01
+2.306994e+00,electronic_vs_classical/01-beethoven-symphony_nr_5-atm.mp3,4.723846e+03,5.920812e-02,2.150786e+03,1.717524e+03,5.627441e-02,classical,-5.906062e-02
+3.475750e+00,electronic_vs_classical/01-beethoven-symphony_nr_5-atm.mp3,2.518039e+03,1.238298e-02,1.875979e+03,1.373541e+03,3.747559e-02,classical,1.054701e+01
+2.796098e+00,electronic_vs_classical/01-beethoven-symphony_nr_5-atm.mp3,3.987680e+03,4.970655e-02,1.620982e+03,1.340347e+03,4.437256e-02,classical,3.637594e+00
+4.682247e+00,electronic_vs_classical/01-beethoven-symphony_nr_5-atm.mp3,2.150629e+03,1.197857e-02,1.617680e+03,9.549270e+02,2.603149e-02,classical,2.515374e+01
+3.553347e+00,electronic_vs_classical/01-beethoven-symphony_nr_5-atm.mp3,2.403644e+03,8.716683e-02,1.425690e+03,9.870436e+02,3.021240e-02,classical,1.259743e+01
+4.392441e+00,electronic_vs_classical/01-beethoven-symphony_nr_5-atm.mp3,2.384802e+03,8.561794e-03,1.896437e+03,1.142335e+03,3.576660e-02,classical,1.902464e+01
+3.332304e+00,electronic_vs_classical/01-beethoven-symphony_nr_5-atm.mp3,2.680884e+03,5.281091e-02,1.355803e+03,1.010139e+03,2.883911e-02,classical,1.117792e+01
+2.924312e+00,electronic_vs_classical/01-beethoven-symphony_nr_5-atm.mp3,3.234018e+03,4.247249e-02,1.728214e+03,1.624147e+03,6.378174e-02,classical,1.082693e+00
+5.860067e+00,electronic_vs_classical/01-beethoven-symphony_nr_5-atm.mp3,1.983746e+03,3.756237e-02,1.058282e+03,6.924021e+02,2.798462e-02,classical,4.942464e+01
+1.335343e+00,electronic_vs_classical/02 - The game of love.mp3,6.446503e+02,7.681032e-02,3.552530e+03,2.451536e+03,2.053833e-02,electronic,-3.895346e+00
+1.092977e+00,electronic_vs_classical/02 - The game of love.mp3,3.309384e+03,9.480783e-02,3.880462e+03,3.015006e+03,4.138184e-02,electronic,-6.171058e+00
+1.560700e+00,electronic_vs_classical/02 - The game of love.mp3,2.943320e+03,1.178797e-01,3.364253e+03,2.336359e+03,3.482056e-02,electronic,-3.203713e+00
+1.246578e+00,electronic_vs_classical/02 - The game of love.mp3,6.208292e+03,2.395374e-01,2.961128e+03,2.503687e+03,3.634644e-02,electronic,-6.521826e+00
+1.022634e+00,electronic_vs_classical/02 - The game of love.mp3,9.823178e+03,1.604178e-01,3.274079e+03,3.038856e+03,4.064941e-02,electronic,-9.758499e+00
+2.779131e+00,electronic_vs_classical/02 - The game of love.mp3,1.306796e+03,2.112283e-01,2.384701e+03,1.262770e+03,1.733398e-02,electronic,5.087925e+00
+3.007979e+00,electronic_vs_classical/02 - The game of love.mp3,1.651328e+03,1.806152e-01,2.078517e+03,1.213085e+03,3.100586e-02,electronic,6.654380e+00
+7.056211e-01,electronic_vs_classical/02 - The game of love.mp3,1.009100e+04,1.712067e-01,3.609691e+03,3.602669e+03,3.359985e-02,electronic,-1.275908e+01
+1.981181e+00,electronic_vs_classical/02 - The game of love.mp3,5.881256e+02,2.181205e-01,3.033374e+03,1.685802e+03,2.102661e-02,electronic,2.522212e-01
+2.737725e+00,electronic_vs_classical/02 - The game of love.mp3,8.801697e+02,1.204594e-01,2.447094e+03,1.209589e+03,1.242065e-02,electronic,5.152376e+00
+6.453926e+00,electronic_vs_classical/04 - Within.mp3,1.051089e+03,6.235631e-02,1.210343e+03,6.655464e+02,2.075195e-02,electronic,4.757653e+01
+2.224024e+00,electronic_vs_classical/04 - Within.mp3,6.998291e+02,1.209506e-01,2.885667e+03,1.525833e+03,1.473999e-02,electronic,1.496823e+00
+2.141564e+00,electronic_vs_classical/04 - Within.mp3,5.248718e+02,1.618700e-01,2.969120e+03,1.532535e+03,1.187134e-02,electronic,1.206178e+00
+2.037096e+00,electronic_vs_classical/04 - Within.mp3,4.172058e+02,1.421083e-01,3.194897e+03,1.634493e+03,1.034546e-02,electronic,7.279488e-01
+7.431621e-01,electronic_vs_classical/04 - Within.mp3,1.493731e+04,1.324153e-01,4.525340e+03,3.776270e+03,6.594849e-02,electronic,-8.252528e+00
+1.506078e+00,electronic_vs_classical/04 - Within.mp3,4.958020e+03,2.247876e-01,2.563522e+03,2.223956e+03,3.530884e-02,electronic,-5.837163e+00
+1.754276e+00,electronic_vs_classical/04 - Within.mp3,6.998291e+02,1.994611e-01,3.265972e+03,1.917858e+03,1.510620e-02,electronic,-1.077291e+00
+8.635326e-01,electronic_vs_classical/04 - Within.mp3,1.047052e+03,1.601570e-01,3.949500e+03,3.236575e+03,2.929688e-02,electronic,-7.541613e+00
+2.710126e-01,electronic_vs_classical/04 - Within.mp3,1.402081e+04,1.348202e-01,4.117118e+03,4.720166e+03,5.227661e-02,electronic,-1.969468e+01
+2.446366e+00,electronic_vs_classical/04 - Within.mp3,3.122314e+02,2.183291e-01,2.849929e+03,1.238358e+03,7.659912e-03,electronic,3.282902e+00
+0.000000e+00,electronic_vs_classical/06-beethoven-moonlight-atm.mp3,2.183063e+04,0.000000e+00,4.729942e+03,8.192000e+03,0.000000e+00,classical,-7.317583e+01
+4.932610e+00,electronic_vs_classical/06-beethoven-moonlight-atm.mp3,6.634918e+02,5.407361e-03,2.151870e+03,7.404844e+02,1.626587e-02,classical,2.403758e+01
+8.307873e+00,electronic_vs_classical/06-beethoven-moonlight-atm.mp3,1.078006e+03,2.492657e-02,1.052628e+03,6.411776e+02,1.989746e-02,classical,8.731382e+01
+8.756718e+00,electronic_vs_classical/06-beethoven-moonlight-atm.mp3,1.487137e+03,1.892975e-02,1.072853e+03,7.587222e+02,4.089355e-02,classical,8.973023e+01
+6.584434e+00,electronic_vs_classical/06-beethoven-moonlight-atm.mp3,9.959106e+02,8.387730e-03,1.615673e+03,6.332370e+02,2.114868e-02,classical,4.543278e+01
+9.260482e+00,electronic_vs_classical/06-beethoven-moonlight-atm.mp3,1.117035e+03,1.334280e-02,1.139006e+03,4.774147e+02,1.730347e-02,classical,9.506382e+01
+8.542223e+00,electronic_vs_classical/06-beethoven-moonlight-atm.mp3,1.106268e+03,1.933548e-02,1.211827e+03,5.158699e+02,1.641846e-02,classical,8.133329e+01
+7.907141e+00,electronic_vs_classical/06-beethoven-moonlight-atm.mp3,7.294373e+02,1.693747e-02,1.370370e+03,4.746734e+02,1.159668e-02,classical,6.702713e+01
+8.153188e+00,electronic_vs_classical/06-beethoven-moonlight-atm.mp3,1.047052e+03,1.499842e-02,1.301536e+03,4.934949e+02,1.461792e-02,classical,7.244802e+01
+0.000000e+00,electronic_vs_classical/06-beethoven-moonlight-atm.mp3,2.183063e+04,0.000000e+00,4.729942e+03,8.192000e+03,0.000000e+00,classical,-7.317583e+01
+1.415473e+00,electronic_vs_classical/05 - Instant crush.mp3,1.104922e+03,1.407127e-01,3.381482e+03,2.350945e+03,1.760864e-02,electronic,-3.579807e+00
+6.702641e-01,electronic_vs_classical/05 - Instant crush.mp3,1.072084e+04,1.800123e-01,3.525708e+03,3.547163e+03,5.596924e-02,electronic,-1.302485e+01
+8.126168e-01,electronic_vs_classical/05 - Instant crush.mp3,9.735699e+03,1.874342e-01,3.472919e+03,3.313985e+03,3.610229e-02,electronic,-1.098476e+01
+6.087495e-01,electronic_vs_classical/05 - Instant crush.mp3,1.098866e+04,1.962979e-01,3.539192e+03,3.644179e+03,4.431152e-02,electronic,-1.400268e+01
+1.584968e+00,electronic_vs_classical/05 - Instant crush.mp3,2.906982e+03,2.437508e-01,3.138985e+03,2.199248e+03,3.408813e-02,electronic,-3.088374e+00
+7.963071e-01,electronic_vs_classical/05 - Instant crush.mp3,9.850095e+03,2.335074e-01,3.452554e+03,3.387936e+03,3.863525e-02,electronic,-1.187077e+01
+8.078202e-01,electronic_vs_classical/05 - Instant crush.mp3,1.096713e+04,1.836772e-01,3.454441e+03,3.386636e+03,3.494263e-02,electronic,-1.186119e+01
+1.543597e+00,electronic_vs_classical/05 - Instant crush.mp3,2.959470e+03,2.564609e-01,2.999460e+03,2.114169e+03,2.612305e-02,electronic,-3.150829e+00
+9.747443e-01,electronic_vs_classical/05 - Instant crush.mp3,8.873026e+03,2.622002e-01,3.358810e+03,3.098863e+03,3.991699e-02,electronic,-9.665855e+00
+4.240624e-01,electronic_vs_classical/05 - Instant crush.mp3,1.111786e+04,2.602029e-01,3.444992e+03,3.982397e+03,6.076050e-02,electronic,-1.976313e+01
+1.200757e+00,electronic_vs_classical/06 - Lose yourself to dance.mp3,8.352191e+03,2.068023e-01,2.922663e+03,2.778472e+03,6.497192e-02,electronic,-9.644238e+00
+1.106090e+00,electronic_vs_classical/06 - Lose yourself to dance.mp3,9.217557e+03,2.353381e-01,3.231395e+03,2.882281e+03,7.748413e-02,electronic,-8.479452e+00
+4.178891e-01,electronic_vs_classical/06 - Lose yourself to dance.mp3,1.164677e+04,3.001948e-01,3.595799e+03,4.147782e+03,1.005859e-01,electronic,-1.970810e+01
+1.387242e+00,electronic_vs_classical/06 - Lose yourself to dance.mp3,3.524716e+03,1.783682e-01,3.178660e+03,2.461297e+03,2.505493e-02,electronic,-4.925595e+00
+1.493622e+00,electronic_vs_classical/06 - Lose yourself to dance.mp3,5.473471e+03,2.312053e-01,2.696938e+03,2.325686e+03,7.070923e-02,electronic,-6.121619e+00
+1.803084e+00,electronic_vs_classical/06 - Lose yourself to dance.mp3,3.583932e+03,2.108529e-01,2.910931e+03,2.093243e+03,3.930664e-02,electronic,-2.294623e+00
+1.361467e+00,electronic_vs_classical/06 - Lose yourself to dance.mp3,6.037372e+03,2.503302e-01,2.543226e+03,2.223067e+03,8.145142e-02,electronic,-6.843007e+00
+1.459436e+00,electronic_vs_classical/06 - Lose yourself to dance.mp3,4.594647e+03,1.647783e-01,2.717665e+03,2.310649e+03,5.316162e-02,electronic,-5.947676e+00
+1.626038e+00,electronic_vs_classical/06 - Lose yourself to dance.mp3,4.586572e+03,1.833858e-01,2.283482e+03,1.939832e+03,4.568481e-02,electronic,-4.772428e+00
+6.177619e-01,electronic_vs_classical/06 - Lose yourself to dance.mp3,1.124302e+04,4.745066e-02,3.482035e+03,3.786426e+03,1.044006e-01,electronic,-1.630008e+01
+2.227038e+00,electronic_vs_classical/09 - Beyond.mp3,6.459961e+02,2.166324e-03,3.304238e+03,1.771839e+03,8.575439e-03,electronic,1.773653e+00
+1.501299e+00,electronic_vs_classical/09 - Beyond.mp3,4.131683e+02,1.523997e-01,3.497664e+03,2.248351e+03,6.646729e-02,electronic,-2.592298e+00
+7.471276e-01,electronic_vs_classical/09 - Beyond.mp3,1.160640e+04,1.955576e-01,3.931870e+03,3.672484e+03,5.364990e-02,electronic,-1.070803e+01
+1.652779e+00,electronic_vs_classical/09 - Beyond.mp3,4.387390e+02,1.670932e-01,3.432578e+03,2.093952e+03,1.696777e-02,electronic,-1.686471e+00
+6.430478e-01,electronic_vs_classical/09 - Beyond.mp3,1.011791e+04,2.086172e-01,4.070916e+03,3.852086e+03,4.675293e-02,electronic,-1.122253e+01
+1.595319e+00,electronic_vs_classical/09 - Beyond.mp3,2.764325e+03,1.741381e-01,3.285417e+03,2.399052e+03,4.647827e-02,electronic,-3.584543e+00
+1.502369e+00,electronic_vs_classical/09 - Beyond.mp3,4.402194e+03,2.482435e-01,2.971508e+03,2.201773e+03,3.485107e-02,electronic,-3.743114e+00
+1.138046e+00,electronic_vs_classical/09 - Beyond.mp3,2.505927e+03,2.136168e-01,3.742858e+03,2.783843e+03,1.919556e-02,electronic,-5.324103e+00
+1.683547e+00,electronic_vs_classical/09 - Beyond.mp3,1.411771e+03,1.978782e-01,3.093513e+03,2.142853e+03,4.449463e-02,electronic,-2.497569e+00
+6.068516e-01,electronic_vs_classical/09 - Beyond.mp3,1.212858e+04,2.183301e-01,3.956947e+03,3.826756e+03,4.544067e-02,electronic,-1.193878e+01
+3.125146e+00,electronic_vs_classical/12 - Doin' it right.mp3,2.407681e+03,1.128772e-01,1.376478e+03,1.039198e+03,2.590942e-02,electronic,9.292140e+00
+3.142007e+00,electronic_vs_classical/12 - Doin' it right.mp3,3.219214e+03,1.059770e-01,1.207907e+03,1.267101e+03,4.669189e-02,electronic,4.049780e+00
+3.512280e+00,electronic_vs_classical/12 - Doin' it right.mp3,1.399658e+03,2.089989e-01,1.278984e+03,9.545968e+02,1.593018e-02,electronic,1.285671e+01
+1.164639e+00,electronic_vs_classical/12 - Doin' it right.mp3,1.172348e+04,1.489425e-01,3.419554e+03,3.149253e+03,8.108521e-02,electronic,-9.268877e+00
+8.474520e-01,electronic_vs_classical/12 - Doin' it right.mp3,9.325223e+03,1.279402e-01,3.253646e+03,3.586543e+03,7.604980e-02,electronic,-1.644826e+01
+1.127934e+00,electronic_vs_classical/12 - Doin' it right.mp3,1.287955e+04,1.650074e-01,3.434786e+03,3.324168e+03,8.728027e-02,electronic,-1.080986e+01
+1.360222e+00,electronic_vs_classical/12 - Doin' it right.mp3,6.859671e+03,2.694821e-01,3.308740e+03,2.771052e+03,3.616333e-02,electronic,-6.433679e+00
+2.179228e+00,electronic_vs_classical/12 - Doin' it right.mp3,2.442673e+03,2.487696e-01,2.688657e+03,1.772224e+03,2.685547e-02,electronic,2.869392e-01
+1.233547e+00,electronic_vs_classical/12 - Doin' it right.mp3,6.637610e+03,2.595677e-01,3.384796e+03,2.900716e+03,3.005981e-02,electronic,-7.278992e+00
+6.433103e-01,electronic_vs_classical/12 - Doin' it right.mp3,5.100677e+02,3.319565e-01,4.063681e+03,3.708555e+03,1.861572e-02,electronic,-1.028651e+01
+2.528991e-01,electronic_vs_classical/10-beethoven-choral-atm.mp3,2.038925e+04,3.340796e-05,5.108820e+03,6.632805e+03,1.855469e-02,classical,-2.843405e+01
+3.938706e+00,electronic_vs_classical/10-beethoven-choral-atm.mp3,2.551685e+03,1.038188e-02,1.591617e+03,1.112718e+03,5.221558e-02,classical,1.677111e+01
+3.726439e+00,electronic_vs_classical/10-beethoven-choral-atm.mp3,2.234070e+03,3.586218e-02,1.414508e+03,1.011185e+03,2.188110e-02,classical,1.512747e+01
+3.657852e+00,electronic_vs_classical/10-beethoven-choral-atm.mp3,2.514001e+03,2.487916e-02,1.277270e+03,9.894998e+02,2.951050e-02,classical,1.529393e+01
+2.567680e+00,electronic_vs_classical/10-beethoven-choral-atm.mp3,3.935193e+03,2.462595e-02,1.977758e+03,1.615760e+03,5.197144e-02,classical,1.326671e+00
+3.062383e+00,electronic_vs_classical/10-beethoven-choral-atm.mp3,2.940628e+03,3.698279e-02,1.614751e+03,1.226988e+03,3.964233e-02,classical,7.109920e+00
+3.476390e+00,electronic_vs_classical/10-beethoven-choral-atm.mp3,2.368652e+03,4.566184e-02,1.319165e+03,9.875363e+02,3.265381e-02,classical,1.191289e+01
+4.691101e+00,electronic_vs_classical/10-beethoven-choral-atm.mp3,1.998550e+03,1.183940e-02,1.629057e+03,1.014795e+03,2.301025e-02,classical,2.462290e+01
+4.496348e+00,electronic_vs_classical/10-beethoven-choral-atm.mp3,1.585382e+03,1.156867e-02,1.562687e+03,1.072026e+03,3.594971e-02,classical,2.173597e+01
+1.700086e+00,electronic_vs_classical/10-beethoven-choral-atm.mp3,5.826077e+03,6.743067e-02,2.838099e+03,2.421455e+03,6.066895e-02,classical,-5.268374e+00
+2.405954e+00,electronic_vs_classical/03 - Giorgio by moroder.mp3,1.247580e+03,2.002027e-01,2.475036e+03,1.384366e+03,1.812744e-02,electronic,2.647662e+00
+1.638049e+00,electronic_vs_classical/03 - Giorgio by moroder.mp3,2.495160e+03,1.858367e-01,2.645182e+03,1.896333e+03,3.942871e-02,electronic,-2.696265e+00
+6.203649e-01,electronic_vs_classical/03 - Giorgio by moroder.mp3,1.260904e+04,4.306060e-02,3.661474e+03,3.813558e+03,1.389465e-01,electronic,-1.447186e+01
+2.333048e+00,electronic_vs_classical/03 - Giorgio by moroder.mp3,1.001294e+03,2.300195e-01,1.718729e+03,1.062071e+03,2.008057e-02,electronic,3.044112e+00
+2.108554e+00,electronic_vs_classical/03 - Giorgio by moroder.mp3,1.061856e+03,2.207400e-01,1.890963e+03,1.177754e+03,2.023315e-02,electronic,9.725028e-01
+1.865235e+00,electronic_vs_classical/03 - Giorgio by moroder.mp3,1.826285e+03,2.508611e-01,1.989897e+03,1.367117e+03,1.968384e-02,electronic,-6.466880e-01
+3.231192e+00,electronic_vs_classical/03 - Giorgio by moroder.mp3,4.952637e+02,2.677014e-01,2.118827e+03,9.068271e+02,1.254272e-02,electronic,8.829587e+00
+2.892515e+00,electronic_vs_classical/03 - Giorgio by moroder.mp3,1.756302e+03,1.884898e-01,1.718314e+03,1.195083e+03,2.380371e-02,electronic,6.151311e+00
+1.963910e+00,electronic_vs_classical/03 - Giorgio by moroder.mp3,1.213934e+03,1.862245e-01,2.408310e+03,1.527229e+03,2.459717e-02,electronic,-3.584189e-01
+9.490624e-01,electronic_vs_classical/03 - Giorgio by moroder.mp3,1.089311e+04,2.658852e-01,3.058505e+03,3.148137e+03,9.323120e-02,electronic,-1.317258e+01
+8.527720e+00,electronic_vs_classical/04-beethoven-pathetique-atm.mp3,8.949738e+02,4.582008e-02,8.144378e+02,6.545907e+02,3.051758e-02,classical,1.048527e+02
+7.483148e+00,electronic_vs_classical/04-beethoven-pathetique-atm.mp3,9.205444e+02,1.126767e-02,1.432660e+03,5.506017e+02,1.818848e-02,classical,5.973730e+01
+5.044866e+00,electronic_vs_classical/04-beethoven-pathetique-atm.mp3,8.371033e+02,6.616506e-03,2.090722e+03,7.710421e+02,1.577759e-02,classical,2.525920e+01
+8.025027e+00,electronic_vs_classical/04-beethoven-pathetique-atm.mp3,7.913452e+02,1.307809e-02,1.341441e+03,5.173699e+02,1.620483e-02,classical,6.916025e+01
+8.661215e+00,electronic_vs_classical/04-beethoven-pathetique-atm.mp3,1.255655e+03,1.469752e-02,1.150201e+03,6.166043e+02,2.243042e-02,classical,8.560848e+01
+6.237459e+00,electronic_vs_classical/04-beethoven-pathetique-atm.mp3,7.913452e+02,7.883899e-03,1.716258e+03,6.188136e+02,1.702881e-02,classical,4.023267e+01
+8.427124e+00,electronic_vs_classical/04-beethoven-pathetique-atm.mp3,1.651328e+03,3.861386e-02,7.287498e+02,6.311450e+02,3.186035e-02,classical,1.192104e+02
+9.545612e+00,electronic_vs_classical/04-beethoven-pathetique-atm.mp3,1.470987e+03,2.621461e-02,9.297080e+02,5.533254e+02,2.154541e-02,classical,1.177555e+02
+6.784393e+00,electronic_vs_classical/04-beethoven-pathetique-atm.mp3,9.959106e+02,8.566223e-03,1.553285e+03,6.096004e+02,1.470947e-02,classical,4.881626e+01
+9.656540e+00,electronic_vs_classical/04-beethoven-pathetique-atm.mp3,1.664786e+03,1.878446e-02,9.516914e+02,5.530259e+02,2.221680e-02,classical,1.162687e+02
+3.402106e+00,electronic_vs_classical/09-beethoven-overture_to_egmont-atm.mp3,2.357886e+03,4.380544e-02,1.434687e+03,1.088452e+03,2.825928e-02,classical,1.116778e+01
+1.924522e+00,electronic_vs_classical/09-beethoven-overture_to_egmont-atm.mp3,8.371033e+02,1.563073e-03,3.842650e+03,2.297132e+03,2.014160e-03,classical,-3.174884e-01
+4.261425e+00,electronic_vs_classical/09-beethoven-overture_to_egmont-atm.mp3,1.588074e+03,2.040409e-02,1.454870e+03,1.003470e+03,2.679443e-02,classical,2.104884e+01
+4.383316e+00,electronic_vs_classical/09-beethoven-overture_to_egmont-atm.mp3,2.369998e+03,4.016580e-02,1.328156e+03,1.019647e+03,4.351807e-02,classical,2.190355e+01
+3.984149e+00,electronic_vs_classical/09-beethoven-overture_to_egmont-atm.mp3,2.519385e+03,1.555006e-02,1.374250e+03,1.045362e+03,3.143311e-02,classical,1.860276e+01
+4.459375e+00,electronic_vs_classical/09-beethoven-overture_to_egmont-atm.mp3,2.104871e+03,1.868888e-02,1.300432e+03,9.464201e+02,3.903198e-02,classical,2.379852e+01
+3.560646e+00,electronic_vs_classical/09-beethoven-overture_to_egmont-atm.mp3,3.129044e+03,1.842113e-02,1.599589e+03,1.251612e+03,4.711914e-02,classical,1.162759e+01
+2.709480e+00,electronic_vs_classical/09-beethoven-overture_to_egmont-atm.mp3,3.772348e+03,2.636182e-02,1.968322e+03,1.539186e+03,4.449463e-02,classical,3.114606e+00
+3.072097e+00,electronic_vs_classical/09-beethoven-overture_to_egmont-atm.mp3,3.773694e+03,4.519274e-02,1.721090e+03,1.401056e+03,4.650879e-02,classical,5.689682e+00
+5.462014e+00,electronic_vs_classical/09-beethoven-overture_to_egmont-atm.mp3,2.092758e+03,3.365905e-02,9.626702e+02,8.640730e+02,3.234863e-02,classical,4.072278e+01
+2.755870e+00,electronic_vs_classical/07-beethoven-pastoral-atm.mp3,3.791190e+03,5.671329e-02,2.011383e+03,1.619932e+03,4.663086e-02,classical,2.785610e+00
+4.389475e+00,electronic_vs_classical/07-beethoven-pastoral-atm.mp3,2.156012e+03,2.451806e-02,1.218396e+03,9.284027e+02,3.045654e-02,classical,2.494838e+01
+4.415923e+00,electronic_vs_classical/07-beethoven-pastoral-atm.mp3,2.240799e+03,1.847847e-02,1.340027e+03,9.556168e+02,2.603149e-02,classical,2.443658e+01
+3.547767e+00,electronic_vs_classical/07-beethoven-pastoral-atm.mp3,2.232724e+03,5.011788e-02,1.497845e+03,1.059535e+03,3.335571e-02,classical,1.255467e+01
+4.395425e+00,electronic_vs_classical/07-beethoven-pastoral-atm.mp3,1.332367e+03,1.009260e-02,1.705546e+03,1.071698e+03,2.761841e-02,classical,2.108698e+01
+2.382499e+00,electronic_vs_classical/07-beethoven-pastoral-atm.mp3,3.181531e+03,1.446477e-03,3.101117e+03,2.092377e+03,3.469849e-02,classical,1.580646e+00
+3.174393e+00,electronic_vs_classical/07-beethoven-pastoral-atm.mp3,2.675500e+03,8.347245e-02,1.542611e+03,1.253679e+03,3.805542e-02,classical,6.843971e+00
+3.703780e+00,electronic_vs_classical/07-beethoven-pastoral-atm.mp3,2.477664e+03,3.193978e-03,2.150131e+03,1.389335e+03,3.396606e-02,classical,1.264421e+01
+2.964280e+00,electronic_vs_classical/07-beethoven-pastoral-atm.mp3,3.561053e+03,7.323227e-02,1.946687e+03,1.573801e+03,4.949951e-02,classical,4.345908e+00
+3.585204e+00,electronic_vs_classical/07-beethoven-pastoral-atm.mp3,2.364615e+03,2.980761e-02,1.456495e+03,1.048202e+03,2.685547e-02,classical,1.430163e+01
+4.170951e+00,electronic_vs_classical/03-beethoven-eroica-atm.mp3,3.779077e+03,5.501666e-03,1.674982e+03,1.308796e+03,5.224609e-02,classical,1.788333e+01
+3.856028e+00,electronic_vs_classical/03-beethoven-eroica-atm.mp3,2.542264e+03,7.097014e-02,1.593096e+03,1.084451e+03,3.875732e-02,classical,1.502494e+01
+4.951308e+00,electronic_vs_classical/03-beethoven-eroica-atm.mp3,2.068533e+03,1.272060e-02,1.310242e+03,9.501062e+02,3.707886e-02,classical,3.074157e+01
+5.854467e+00,electronic_vs_classical/03-beethoven-eroica-atm.mp3,1.600186e+03,9.886166e-03,1.374138e+03,7.854831e+02,2.178955e-02,classical,4.120328e+01
+3.709613e+00,electronic_vs_classical/03-beethoven-eroica-atm.mp3,2.557068e+03,8.151973e-02,1.584057e+03,1.103778e+03,3.381348e-02,classical,1.344133e+01
+5.583688e+00,electronic_vs_classical/03-beethoven-eroica-atm.mp3,1.925876e+03,1.001811e-02,1.277138e+03,9.016216e+02,3.005981e-02,classical,3.956870e+01
+5.019174e+00,electronic_vs_classical/03-beethoven-eroica-atm.mp3,2.333661e+03,1.902922e-02,1.159170e+03,9.095200e+02,4.046631e-02,classical,3.426695e+01
+4.620141e+00,electronic_vs_classical/03-beethoven-eroica-atm.mp3,2.145245e+03,2.255662e-02,1.217518e+03,1.177107e+03,5.688477e-02,classical,2.061842e+01
+3.900460e+00,electronic_vs_classical/03-beethoven-eroica-atm.mp3,2.458823e+03,1.513043e-02,1.582663e+03,1.233200e+03,2.609253e-02,classical,1.588049e+01
+3.422745e+00,electronic_vs_classical/03-beethoven-eroica-atm.mp3,3.065790e+03,8.663025e-02,1.738647e+03,1.300413e+03,5.029297e-02,classical,9.511155e+00
+2.754956e+00,electronic_vs_classical/05-beethoven-violin_concerto_in_d_major-atm.mp3,3.534137e+03,8.138525e-02,1.610596e+03,1.379661e+03,3.601074e-02,classical,2.737770e+00
+2.558505e+00,electronic_vs_classical/05-beethoven-violin_concerto_in_d_major-atm.mp3,5.920285e+03,6.097557e-03,2.182090e+03,2.048217e+03,6.622314e-02,classical,-1.669164e+00
+2.698106e+00,electronic_vs_classical/05-beethoven-violin_concerto_in_d_major-atm.mp3,3.742740e+03,3.326019e-02,1.970253e+03,1.656719e+03,4.928589e-02,classical,1.705591e+00
+2.467340e+00,electronic_vs_classical/05-beethoven-violin_concerto_in_d_major-atm.mp3,3.979605e+03,4.752749e-02,2.011536e+03,1.734429e+03,4.522705e-02,classical,-4.397000e-01
+3.219691e+00,electronic_vs_classical/05-beethoven-violin_concerto_in_d_major-atm.mp3,2.123712e+03,2.989184e-02,1.766878e+03,1.277392e+03,3.384399e-02,classical,8.221242e+00
+3.450733e+00,electronic_vs_classical/05-beethoven-violin_concerto_in_d_major-atm.mp3,1.978363e+03,5.343212e-02,1.527051e+03,1.158189e+03,2.877808e-02,classical,1.016551e+01
+3.005992e+00,electronic_vs_classical/05-beethoven-violin_concerto_in_d_major-atm.mp3,2.505927e+03,6.251247e-02,1.626075e+03,1.231476e+03,2.978516e-02,classical,6.380848e+00
+3.385899e+00,electronic_vs_classical/05-beethoven-violin_concerto_in_d_major-atm.mp3,3.528754e+03,3.971937e-02,1.576292e+03,1.173305e+03,4.483032e-02,classical,9.820744e+00
+3.993392e+00,electronic_vs_classical/05-beethoven-violin_concerto_in_d_major-atm.mp3,1.771106e+03,2.148192e-02,1.625687e+03,1.107149e+03,2.026367e-02,classical,1.608454e+01
+3.148646e+00,electronic_vs_classical/05-beethoven-violin_concerto_in_d_major-atm.mp3,2.335007e+03,5.931605e-03,2.483567e+03,1.661571e+03,3.170776e-02,classical,7.000104e+00
+1.335344e+00,electronic_vs_classical/11 - Fragments of time.mp3,1.044360e+03,2.425600e-01,3.308651e+03,2.409363e+03,3.686523e-02,electronic,-4.325669e+00
+1.556491e+00,electronic_vs_classical/11 - Fragments of time.mp3,1.126456e+03,1.791061e-01,3.376545e+03,2.281094e+03,3.521729e-02,electronic,-2.799388e+00
+8.913324e-01,electronic_vs_classical/11 - Fragments of time.mp3,1.187825e+04,1.839673e-01,3.755154e+03,3.519089e+03,7.452393e-02,electronic,-1.045201e+01
+1.803446e+00,electronic_vs_classical/11 - Fragments of time.mp3,2.069879e+03,2.367558e-01,3.145253e+03,1.994157e+03,3.402710e-02,electronic,-1.229397e+00
+1.190514e+00,electronic_vs_classical/11 - Fragments of time.mp3,6.290387e+03,2.127685e-01,3.486798e+03,2.796667e+03,6.262207e-02,electronic,-6.184303e+00
+1.590042e+00,electronic_vs_classical/11 - Fragments of time.mp3,3.402246e+03,2.420674e-01,3.260392e+03,2.271547e+03,5.364990e-02,electronic,-2.985650e+00
+8.210874e-01,electronic_vs_classical/11 - Fragments of time.mp3,1.199399e+04,2.333360e-01,3.968695e+03,3.614607e+03,6.552124e-02,electronic,-9.868424e+00
+1.504225e+00,electronic_vs_classical/11 - Fragments of time.mp3,5.610745e+03,2.391509e-01,2.693894e+03,2.269757e+03,4.193115e-02,electronic,-5.472809e+00
+8.348472e-01,electronic_vs_classical/11 - Fragments of time.mp3,9.718204e+03,2.229918e-01,3.574821e+03,3.261777e+03,6.890869e-02,electronic,-9.768799e+00
+1.460081e+00,electronic_vs_classical/11 - Fragments of time.mp3,1.410425e+03,2.176331e-01,3.623758e+03,2.477784e+03,3.329468e-02,electronic,-3.413662e+00

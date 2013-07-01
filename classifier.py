@@ -47,7 +47,7 @@ class Classifier(object):
                 rule_dict = {'rule': rule, 'fitness': self._rule_fitness(rule)}
                 self.rules[result_type].append(rule_dict)
 
-    def train(self, min_fitness=6, gen_select=4):
+    def train(self, min_fitness=6, gen_select=4, limit_generations=2500):
         """
         Realiza el entrenamiento de las reglas, mutandolas usando tecnicas de
         algoritmos evolutivos hasta que el fitness total de el conjunto de las
@@ -58,9 +58,10 @@ class Classifier(object):
         generation = 0
         best_rules = {}
         total_best = dict((rule_name, 0) for rule_name, _ in self.rules.items())
+        list_average_fitness = dict((rule_name, [['Generación', 'Fitness']]) for rule_name, _ in self.rules.items())
 
         # itero hasta tener un fitness total mayor al especificado.
-        while min_fitness > total_fitness and generation < 500000:
+        while min_fitness > total_fitness and generation < limit_generations:
             max_fitness_list = []
             generation += 1
 
@@ -74,7 +75,7 @@ class Classifier(object):
                 if max_fitness[0] > total_best[rule_name]:
                     total_best[rule_name] = max_fitness[0]
                 # Se guarda el max_fitness para comparar rapidamente.
-                if generation % 100000 == 0:
+                if generation % 5000 == -1:
                     print "Best", rule_name, "rule of generation", generation, ", fitness:", max_fitness, ". Rule:"
                     best_rule.print_rule()
                     print "All", len(list_of_rules), "rules for ", rule_name, " of generation", generation
@@ -82,6 +83,8 @@ class Classifier(object):
                     print "End generation", generation
                     print "*************************"
                 max_fitness_list.append(max_fitness[0])
+                if generation % 10 == 0:
+                    list_average_fitness[rule_name].append([generation, max_fitness[0]])
                 # Guardo la mejor regla en caso de que quiera tenerla.
                 best_rules[rule_name] = {'rule': best_rule, 'fitness': max_fitness}
 
@@ -92,6 +95,11 @@ class Classifier(object):
         self.best_rules = best_rules
 
         print "Total best:", total_best
+        print "Average fitness change:"
+        for type_rule, list_fitness in list_average_fitness.items():
+            print "Para regla", type_rule
+            print list_fitness
+            print "\n\n\n\n"
 
         return total_fitness
 
@@ -176,7 +184,7 @@ class Classifier(object):
 
         return list_of_rules
 
-    def _mutate(self, list_of_rules, mutation_probability=0.10):
+    def _mutate(self, list_of_rules, mutation_probability=0.05):
         """
         Muta algunas reglas de las reglas en la lista `list_of_rules`.
 
@@ -299,12 +307,18 @@ class Classifier(object):
 
     def _print_list_of_rules(self, list_of_rules):
         for i, rule_dict in enumerate(list_of_rules):
-            print "#", i, ". Rule type:" , rule_dict['rule'].result_type, ", rule fitness:", rule_dict['fitness']
+            print "#", i, ". Rule type:", rule_dict['rule'].result_type, ", rule fitness:", rule_dict['fitness']
             rule_dict['rule'].print_rule()
 
     def _print_rules(self):
         for rule_type, rule_list in self.rules.items():
             print "Rule type:", rule_type
             for i, rule_dict in enumerate(rule_list):
-                print "#", i, ". Rule type:" , rule_type, ", rule fitness:", rule_dict['fitness']
+                print "#", i, ". Rule type:", rule_type, ", rule fitness:", rule_dict['fitness']
                 rule_dict['rule'].print_rule()
+
+    def _average_fitness(self, list_of_rules):
+        total = 0
+        for rule_dict in list_of_rules:
+            total += rule_dict['fitness'][0]
+        return total / len(list_of_rules)
