@@ -67,8 +67,7 @@ def rank_selection(list_of_rules, num_select):
     return selected_rules
 
 
-# Para el tournament selection se necesitan 2 parametros. Cambiar luego _select_rules en classifier.py
-def tournament_selection(list_of_rules, num_rules, num_select):
+def tournament_selection(list_of_rules, num_rules, num_select=4):
     """
     Seleccion de reglas utilizando tecnica de tournament selection.
     Se eligen 'num_rules' reglas y se seleccionan las mejores 'num_select'.
@@ -79,11 +78,11 @@ def tournament_selection(list_of_rules, num_rules, num_select):
         index = random.randint(0, len(list_of_rules)-1)
 
         # Si la regla ya esta seleccionada entonces sigo buscando otra
-        while list_of_rules(index) in selected_rules:
+        while list_of_rules[index] in selected_rules:
             index = random.randint(0, len(list_of_rules)-1)
 
         # Agrego la regla seleccionada
-        selected_rules.append(list_of_rules(index))
+        selected_rules.append(list_of_rules[index])
 
     # Ordeno las reglas y selecciono las mejores 'num_select'
     rank_selection(selected_rules, num_select)
