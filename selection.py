@@ -85,4 +85,4 @@ def tournament_selection(list_of_rules, num_rules, num_select=4):
         selected_rules.append(list_of_rules[index])
 
     # Ordeno las reglas y selecciono las mejores 'num_select'
-    rank_selection(selected_rules, num_select)
+    return rank_selection(selected_rules, num_select)
