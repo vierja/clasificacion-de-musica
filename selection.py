@@ -60,7 +60,7 @@ def rank_selection(list_of_rules, num_select):
     """
     selected_rules = []
     # Ordeno primero las reglas por su valor de fitness
-    order_rules = sorted(list_of_rules, key=lambda rule: rule['fitness'], reverse=True)
+    order_rules = sorted(list_of_rules, key=lambda rule: rule['fitness'][0], reverse=True)
     # Selecciono las mejores 'num_select'
     selected_rules = order_rules[:num_select]
 

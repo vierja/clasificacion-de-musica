@@ -20,6 +20,9 @@ lugar una implementacion de largo fijo para luego poder, con una version que
 funcione, mejorarla.
 """
 
+NEW_RANDOM = 1 
+INCREASE = 2 
+DECREASE = 3
 
 class Rule(object):
     """Regla de clasificacion individual."""
@@ -152,7 +155,7 @@ class Rule(object):
 
         return correct_values, incorrect_values
 
-    def mutate(self):
+    def mutate(self, action):
         """
         En la mutacion, cuando se separa un intervalo, se selecciona un punto al azar de los micro-intervalos para hacer el corte. (split)
         Luego cuando se fusiona dos intervalos, el estado resultante (1 o 0) del intervalo se toma del que tiene más micro-intervalos.
@@ -173,7 +176,8 @@ class Rule(object):
         - DECREASE
             Se decrementa el intervalo de determinado feature.
         """
-        NEW_RANDOM, INCREASE, DECREASE = 1, 2, 3
+        # NEW_RANDOM, INCREASE, DECREASE = 1, 2, 3
+		
         mutated_features = []
         num_to_mutate = random.randint(1, self.features_len)
         while len(mutated_features) < num_to_mutate:
@@ -182,7 +186,7 @@ class Rule(object):
                 mutated_features.append(feature_pos)
 
                 # Elijo la accion a tomar.
-                action = random.choice([NEW_RANDOM, INCREASE, DECREASE])
+                # action = random.choice([NEW_RANDOM, INCREASE, DECREASE])
 
                 if action == NEW_RANDOM:
                     self.features_lists[feature_pos] = self._init_random_interval()

@@ -184,7 +184,7 @@ class Classifier(object):
 
         return list_of_rules
 
-    def _mutate(self, list_of_rules, mutation_probability=0.05):
+    def _mutate(self, list_of_rules, mutation_probability=0.05, action=rule.NEW_RANDOM):
         """
         Muta algunas reglas de las reglas en la lista `list_of_rules`.
 
@@ -194,7 +194,7 @@ class Classifier(object):
         for rule_map in list_of_rules:
             # random.random() devuelve un numero de 0 a 1.
             if random.random() < mutation_probability:
-                rule_map['rule'].mutate()
+                rule_map['rule'].mutate(action)
 
     def _evaluate_fitness(self, list_of_rules):
         """
