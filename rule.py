@@ -155,7 +155,7 @@ class Rule(object):
 
         return correct_values, incorrect_values
 
-    def mutate(self, action):
+    def mutate(self, action=NEW_RANDOM):
         """
         En la mutacion, cuando se separa un intervalo, se selecciona un punto al azar de los micro-intervalos para hacer el corte. (split)
         Luego cuando se fusiona dos intervalos, el estado resultante (1 o 0) del intervalo se toma del que tiene más micro-intervalos.
