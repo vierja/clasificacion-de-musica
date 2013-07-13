@@ -84,8 +84,28 @@ def read_lines(filename, list_of_lines):
 
 
 def read_average(filename):
-    all_lines = [float)line.strip()) for line in open(filename, "r") if line[0] != "%"]
-    return [reduce(lambda x, y: x + y, all_lines) / len(all_lines)]
+    """
+    Perdon por esto, queria ver si lo podia hacer en una sola linea.
+    El equivalente:
+
+        with open(filename, "r") as source:
+            reader = csv.reader(source)
+            all_lines = [line for line in reader if line[0][0] != "%"]
+
+        float_lines = []
+        for line in all_lines:
+            float_lines.append([float(val) for val in line])
+
+        value_list = []
+        for internal_feature in zip(*float_lines):
+            value_list.append(reduce(lambda x, y: x + y, internal_feature) / len(internal_feature))
+        return value_list
+
+    """
+    with open(filename, "r") as source:
+        reader = csv.reader(source)
+        return [reduce(lambda x, y: x + y, internal_feature) / len(internal_feature) for internal_feature in zip(*[[float(val) for val in line] for line in [line for line in reader if line[0][0] != "%"]])]
+
 
 def save_feature_plan(directory):
     file_txt = ''
