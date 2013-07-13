@@ -84,8 +84,8 @@ def read_lines(filename, list_of_lines):
 
 
 def read_average(filename):
-    return [line.strip() for line in open(filename, "r") if line[0] != "%"]
-
+    all_lines = [float)line.strip()) for line in open(filename, "r") if line[0] != "%"]
+    return [reduce(lambda x, y: x + y, all_lines) / len(all_lines)]
 
 def save_feature_plan(directory):
     file_txt = ''
