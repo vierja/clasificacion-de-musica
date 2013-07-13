@@ -36,6 +36,8 @@ def get_features(filename, feature_plan, num_frames_song=10, get_average=False):
 
             genre = get_top_tag(basename(filename))
 
+            if get_average:
+                num_frames_song = 1
             features_list = {"song": [filename] * num_frames_song, "genre": [genre] * num_frames_song}
 
             for feature_name, short_name in features.items():
@@ -47,7 +49,7 @@ def get_features(filename, feature_plan, num_frames_song=10, get_average=False):
                     frames = random.sample(xrange(int(num_frames)), num_frames_song)
 
                 # Values es una lista de valores como string
-                if get_average:
+                if not get_average:
                     values = read_lines(csv_filename, frames)
                 else:
                     values = read_average(csv_filename)
@@ -141,7 +143,7 @@ def main():
     feature_plan = save_feature_plan(tmp_directory)
 
     for filename in list_of_files:
-        features = get_features(filename, feature_plan)
+        features = get_features(filename, feature_plan, get_average=True)
         if features:
             list_of_map_features += [features]
 
