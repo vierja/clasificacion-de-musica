@@ -5,6 +5,7 @@ import selection
 import random
 import csv
 from rule import Rule
+import plotly
 
 DEFAULT_DISCRETE_INTERVALS = 100
 
@@ -14,7 +15,7 @@ class Classifier(object):
     Clase principal del clasificador.
     """
 
-    def __init__(self, source, discrete_intervals=DEFAULT_DISCRETE_INTERVALS, size_rule_generation=10):
+    def __init__(self, source, discrete_intervals=DEFAULT_DISCRETE_INTERVALS, size_rule_generation=20):
         """
         Inicializa el clasificador. Toma como fuente un archivo csv y puede
         recibir como parametro opcional la cantidad de intervalos para discretizar
@@ -29,6 +30,7 @@ class Classifier(object):
         self.size_rule_generation = size_rule_generation
         self.len_rules = len(self.result_types)
         self.best_rules = {}
+        self.py = plotly.plotly(username='vierja', key='uzkqabvlzm', verbose=False)
 
         # Cada regla tiene `size_rule_generation` reglas inicialmente creadas
         # al azar.
@@ -47,7 +49,7 @@ class Classifier(object):
                 rule_dict = {'rule': rule, 'fitness': self._rule_fitness(rule)}
                 self.rules[result_type].append(rule_dict)
 
-    def train(self, min_fitness=6, gen_select=4, limit_generations=2500):
+    def train(self, req_min_fitness=6, gen_select=2, limit_generations=10000):
         """
         Realiza el entrenamiento de las reglas, mutandolas usando tecnicas de
         algoritmos evolutivos hasta que el fitness total de el conjunto de las
@@ -58,10 +60,12 @@ class Classifier(object):
         generation = 0
         best_rules = {}
         total_best = dict((rule_name, 0) for rule_name, _ in self.rules.items())
-        list_average_fitness = dict((rule_name, [['Generación', 'Fitness']]) for rule_name, _ in self.rules.items())
+        list_max_fitness = dict((rule_name, [['Generación', 'Fitness']]) for rule_name, _ in self.rules.items())
+        list_min_fitness = dict((rule_name, [['Generación', 'Fitness']]) for rule_name, _ in self.rules.items())
+        list_avg_fitness = dict((rule_name, [['Generación', 'Fitness']]) for rule_name, _ in self.rules.items())
 
         # itero hasta tener un fitness total mayor al especificado.
-        while min_fitness > total_fitness and generation < limit_generations:
+        while req_min_fitness > total_fitness and generation < limit_generations:
             max_fitness_list = []
             generation += 1
 
@@ -69,9 +73,10 @@ class Classifier(object):
                 # devuelve una nueva lista
                 list_of_rules = self._select_rules(list_of_rules, gen_select)
                 list_of_rules = self._crossover(list_of_rules)
+                assert len(list_of_rules) == self.size_rule_generation
                 # modifica la lista
                 self._mutate(list_of_rules)
-                max_fitness, best_rule = self._evaluate_fitness(list_of_rules)
+                max_fitness, best_rule, min_fitness, worst_rule = self._evaluate_fitness(list_of_rules)
                 if max_fitness[0] > total_best[rule_name]:
                     total_best[rule_name] = max_fitness[0]
                 # Se guarda el max_fitness para comparar rapidamente.
@@ -83,8 +88,10 @@ class Classifier(object):
                     print "End generation", generation
                     print "*************************"
                 max_fitness_list.append(max_fitness[0])
-                if generation % 10 == 0:
-                    list_average_fitness[rule_name].append([generation, max_fitness[0]])
+                if generation % 100 == 0:
+                    list_max_fitness[rule_name].append([generation, max_fitness[0]])
+                    list_min_fitness[rule_name].append([generation, min_fitness[0]])
+                    list_avg_fitness[rule_name].append([generation, self._average_fitness(list_of_rules)])
                 # Guardo la mejor regla en caso de que quiera tenerla.
                 best_rules[rule_name] = {'rule': best_rule, 'fitness': max_fitness}
 
@@ -95,12 +102,39 @@ class Classifier(object):
         self.best_rules = best_rules
 
         print "Total best:", total_best
-        print "Average fitness change:"
-        for type_rule, list_fitness in list_average_fitness.items():
-            print "Para regla", type_rule
-            print list_fitness
-            print "\n\n\n\n"
+        trace_list = []
+        for type_rule, list_fitness in list_max_fitness.items():
+            unziped = zip(*list_fitness)
+            generation_list = list(unziped[0])[1:]
+            max_fitness_list = list(unziped[1])[1:]
+            min_fitness_list = list(zip(*list_min_fitness[type_rule])[1])[1:]
+            avg_fitness_list = list(zip(*list_avg_fitness[type_rule])[1])[1:]
 
+            trace = {
+                'x' : generation_list,
+                'y' : max_fitness_list,
+                'type': 'scatter',
+                'mode': 'lines'
+            }
+            trace_list.append(trace)
+            continue
+            trace = {
+                'x' : generation_list,
+                'y' : min_fitness_list,
+                'type': 'scatter',
+                'mode': 'lines'
+            }
+            trace_list.append(trace)
+            trace = {
+                'x' : generation_list,
+                'y' : avg_fitness_list,
+                'type': 'scatter',
+                'mode': 'lines'
+            }
+            trace_list.append(trace)
+
+        response = self.py.plot(trace_list)
+        print "Performance graph:", response['url']
         return total_fitness
 
     def _rule_fitness(self, rule):
@@ -175,14 +209,19 @@ class Classifier(object):
         10 en total se crean hijos a partir de las combinaciones de 4 tomadas
         de a dos (6) y se lo suma a los padres para un total de 10.
         """
-        combinations = [x for x in itertools.combinations(list_of_rules, 2)]
-        # Uso itertools.combinations para crear sets de combinaciones de las reglas.
-        for rule1, rule2 in combinations:
-            new_rule = Rule.crossover(rule1['rule'], rule2['rule'])
-            rule_map = {'fitness': (0, 0), 'rule': new_rule}
-            list_of_rules.append(rule_map)
+        if len(list_of_rules) > 1:
+            combinations = [x for x in itertools.combinations(list_of_rules, 2)]
+            # Uso itertools.combinations para crear sets de combinaciones de las reglas.
+            while len(list_of_rules) < self.size_rule_generation:
+                for rule1, rule2 in combinations:
+                    new_rule = Rule.crossover(rule1['rule'], rule2['rule'])
+                    rule_map = {'fitness': (0, 0), 'rule': new_rule}
+                    list_of_rules.append(rule_map)
+        else:
+            print "Invalid number of rules to crossover (" + str(len(list_of_rules)) + ")."
+            exit(0)
 
-        return list_of_rules
+        return list_of_rules[:self.size_rule_generation]
 
     def _mutate(self, list_of_rules, mutation_probability=0.05):
         """
@@ -205,14 +244,21 @@ class Classifier(object):
         max_fitness_val = -1
         max_fitness_rule = None
         max_fitness = None
+        min_fitness_val = 999999
+        min_fitness_rule = None
+        min_fitness = None
         for rule in list_of_rules:
             rule['fitness'] = self._rule_fitness(rule['rule'])
             if rule['fitness'][0] > max_fitness_val:
                 max_fitness_val = rule['fitness'][0]
                 max_fitness = rule['fitness']
                 max_fitness_rule = rule['rule']
+            if rule['fitness'][0] < min_fitness_val:
+                min_fitness_val = rule['fitness'][0]
+                min_fitness = rule['fitness']
+                min_fitness_rule = rule['rule']
 
-        return max_fitness, max_fitness_rule
+        return max_fitness, max_fitness_rule, min_fitness, min_fitness_rule
 
     def _read_source(self):
         """
@@ -299,6 +345,8 @@ class Classifier(object):
         Sirve para poder persistir un entrenamiento a medio camino
         y poder seguir ejecutando el train.
         """
+        pass
+
     def save_rules(self, output):
         """
         Guarda las reglas en un archivo

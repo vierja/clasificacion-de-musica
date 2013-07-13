@@ -20,10 +20,9 @@ features = {'Energy': 'energy', 'SpectralShapeStatistics': 'sss', 'ZCR': 'zcr', 
 block_size = 32768
 step_size = 24576
 tmp_directory = '/tmp/extract_features_tmp'
-num_frames_song = 10
 
 
-def get_features(filename, feature_plan):
+def get_features(filename, feature_plan, num_frames_song=10, get_average=False):
     retries = 0
     while retries < 4:
         try:
@@ -47,7 +46,12 @@ def get_features(filename, feature_plan):
                     num_frames = num_frames.split(' ')[0]
                     frames = random.sample(xrange(int(num_frames)), num_frames_song)
 
-                values = read_lines(csv_filename, frames)
+                # Values es una lista de valores como string
+                if get_average:
+                    values = read_lines(csv_filename, frames)
+                else:
+                    values = read_average(csv_filename)
+
                 if feature_name == 'SpectralShapeStatistics':
                     # el value trae una lista de 4 elements y queremos 4 listas de cada elemento.
                     # haciendo zip(*) del split nos quedamos con tuplas (sets) despues los pasamos a list
@@ -75,6 +79,10 @@ def read_lines(filename, list_of_lines):
     process = subprocess.Popen(args, stdout=subprocess.PIPE)
     lines, err = process.communicate()
     return lines.split('\n')[:-1]  # Ultimo elemento es vacio.
+
+
+def read_average(filename):
+    return [line.strip() for line in open(filename, "r") if line[0] != "%"]
 
 
 def save_feature_plan(directory):

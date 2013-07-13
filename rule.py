@@ -177,7 +177,7 @@ class Rule(object):
             Se decrementa el intervalo de determinado feature.
         """
         # NEW_RANDOM, INCREASE, DECREASE = 1, 2, 3
-		
+
         mutated_features = []
         num_to_mutate = random.randint(1, self.features_len)
         while len(mutated_features) < num_to_mutate:
