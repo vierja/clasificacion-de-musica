@@ -98,13 +98,13 @@ def read_average(filename):
 
         value_list = []
         for internal_feature in zip(*float_lines):
-            value_list.append(reduce(lambda x, y: x + y, internal_feature) / len(internal_feature))
-        return value_list
+            value_list.append(str(reduce(lambda x, y: x + y, internal_feature) / len(internal_feature)))
+        return ",".join(value_list)
 
     """
     with open(filename, "r") as source:
         reader = csv.reader(source)
-        return [reduce(lambda x, y: x + y, internal_feature) / len(internal_feature) for internal_feature in zip(*[[float(val) for val in line] for line in [line for line in reader if line[0][0] != "%"]])]
+        return ",".join([str(reduce(lambda x, y: x + y, internal_feature) / len(internal_feature)) for internal_feature in zip(*[[float(val) for val in line] for line in [line for line in reader if line[0][0] != "%"]])])
 
 
 def save_feature_plan(directory):
