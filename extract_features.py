@@ -16,7 +16,7 @@ import csv
 from metadata_fetch import get_top_tag
 
 
-features = {'Energy': 'energy', 'SpectralShapeStatistics': 'sss', 'ZCR': 'zcr', 'SpectralRolloff': 'spectral_rolloff'}
+features = {'Energy': 'energy', 'SpectralShapeStatistics': 'sss', 'ZCR': 'zcr', 'SpectralRolloff': 'spectral_rolloff', 'SpectralVariation': 'sv', 'OBSI': 'obsi'}
 block_size = 32768
 step_size = 24576
 tmp_directory = '/tmp/extract_features_tmp'
@@ -57,12 +57,17 @@ def get_features(filename, feature_plan, num_frames_song=10, get_average=False):
                 if feature_name == 'SpectralShapeStatistics':
                     # el value trae una lista de 4 elements y queremos 4 listas de cada elemento.
                     # haciendo zip(*) del split nos quedamos con tuplas (sets) despues los pasamos a list
-                    list_of_values = [list(a) for a in zip(*[value.split(',') for value in values])]
+                    if not get_average:
+                        list_of_values = [list(a) for a in zip(*[value.split(',') for value in values])]
+                    else:
+                        list_of_values = values
                     features_list["centroid"] = list_of_values[0]
                     features_list["spread"] = list_of_values[1]
                     features_list["skewness"] = list_of_values[2]
                     features_list["kurtosis"] = list_of_values[3]
                 else:
+                    if get_average:
+                        values = values[0]
                     features_list[short_name] = values
 
             return features_list
@@ -99,12 +104,12 @@ def read_average(filename):
         value_list = []
         for internal_feature in zip(*float_lines):
             value_list.append(str(reduce(lambda x, y: x + y, internal_feature) / len(internal_feature)))
-        return ",".join(value_list)
+        return value_list
 
     """
     with open(filename, "r") as source:
         reader = csv.reader(source)
-        return ",".join([str(reduce(lambda x, y: x + y, internal_feature) / len(internal_feature)) for internal_feature in zip(*[[float(val) for val in line] for line in [line for line in reader if line[0][0] != "%"]])])
+        return [[str(reduce(lambda x, y: x + y, internal_feature) / len(internal_feature))] for internal_feature in zip(*[[float(val) for val in line] for line in [line for line in reader if line[0][0] != "%"]])]
 
 
 def save_feature_plan(directory):
@@ -141,6 +146,7 @@ def save_features_csv(list_of_map_features, output_file):
     field_names = final_map.keys()
 
     list_of_lists = [final_map[field] for field in field_names]
+    print list_of_lists
 
     with open(output_file, 'wb') as f:
         writer = csv.writer(f)
@@ -163,7 +169,7 @@ def main():
     feature_plan = save_feature_plan(tmp_directory)
 
     for filename in list_of_files:
-        features = get_features(filename, feature_plan, get_average=True)
+        features = get_features(filename, feature_plan, num_frames_song=1, get_average=True)
         if features:
             list_of_map_features += [features]
 
