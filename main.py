@@ -16,7 +16,7 @@ def main():
 
     #return
     options = [
-        [100, 10, 0.9, 4, 1000],  # discrete_intervals, size_rule_generation, req_min_fitness, gen_select, limit_generations
+        [100, 10, 0.9, 4, 10000],  # discrete_intervals, size_rule_generation, req_min_fitness, gen_select, limit_generations
         [1000, 10, 0.9, 4, 10000],
         [100, 20, 0.9, 4, 10000],
         [100, 5, 0.9, 2, 10000],

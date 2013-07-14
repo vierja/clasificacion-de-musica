@@ -360,42 +360,52 @@ class Classifier(object):
 
 
     def test(self):
-        results_by_type = dict((type, {'correct': 0, 'incorrect': 0}) for type in self.result_types)
+        results_by_type = dict((type, dict((type, 0) for type in self.result_types)) for type in self.result_types)
+        results_by_type_positive_negative = dict((type, {"correct": 0, "incorrect": 0}) for type in self.result_types)
         for song_data in self.test_data:
             print "Se evalua cancion de tipo:", song_data['result_type']
             guessed_genre = self.guess_genre(song_data['values'])
             if guessed_genre == song_data['result_type']:
-                results_by_type[song_data['result_type']]['correct'] += 1
+                results_by_type[song_data['result_type']][guessed_genre] += 1
+                results_by_type_positive_negative[song_data['result_type']]["correct"] += 1
                 print "CORRECT!"
             else:
-                results_by_type[song_data['result_type']]['incorrect'] += 1
+                results_by_type[song_data['result_type']][guessed_genre] += 1
+                results_by_type_positive_negative[song_data['result_type']]["incorrect"] += 1
                 print "Incorrect."
 
-
         graph_list = []
+
+        result_type_list = [result_type for result_type, _ in results_by_type.items()]
 
         for result_type, result_test in results_by_type.items():
             res_map = {
                 "name": result_type,
-                "x": ["Correct", "Incorrect"],
-                "y": [result_test['correct'], result_test['incorrect']],
+                "x": result_type_list,
+                "y": [results_by_type[each_type][result_type] for each_type in result_type_list],
                 "type": "bar"
             }
             graph_list.append(res_map)
 
-        result_type_list = [result_type for result_type, _ in results_by_type.items()]
-        
+        layout = {
+            "barmode": "group",
+            'xaxis': {'type': 'combination'},
+            'categories': result_type_list
+        }
+        response = self.py.plot(graph_list, layout=layout)
+        print response['url']
+
         correct = {
             "name": "Correct",
             "x": result_type_list,
-            "y": [result['correct'] for _, result in results_by_type.items()],
+            "y": [result["correct"] for res_type, result in results_by_type_positive_negative.items()],
             "type": "bar"
         }
 
         incorrect = {
             "name": "Incorrect",
             "x": result_type_list,
-            "y": [result['incorrect'] for _, result in results_by_type.items()],
+            "y": [result["incorrect"] for res_type, result in results_by_type_positive_negative.items()],
             "type": "bar"
         }
         layout = {
