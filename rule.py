@@ -28,6 +28,7 @@ DECREASE = 3
 class Rule(object):
     """
     Regla de clasificacion individual.
+    
     """
 
     def __init__(self, features, discrete_intervals, result_type, parent1=None, parent2=None):
@@ -140,7 +141,7 @@ class Rule(object):
 
             if self.features_lists[pos][value_pos]:
                 correct_values += 1
-                if is_type is not None: 
+                if is_type is not None:
                     if is_type:
                         # Si la regla es positiva y es de tipo correcto
                         self.stats[pos][0] += 1
@@ -149,7 +150,7 @@ class Rule(object):
                         self.stats[pos][1] += 1
             else:
                 incorrect_values += 1
-                if is_type is not None: 
+                if is_type is not None:
                     if is_type:
                         # Si la regla es negativa y es de tipo correcto
                         self.stats[pos][1] += 1
@@ -157,7 +158,7 @@ class Rule(object):
                         # Si la regla es negativa y NO es de tipo correcto.
                         self.stats[pos][0] += 1
 
-        return abs(correct_values - incorrect_values), 0
+        return correct_values, incorrect_values
 
     def mutate(self, action=NEW_RANDOM):
         """
