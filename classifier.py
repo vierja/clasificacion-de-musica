@@ -15,7 +15,7 @@ class Classifier(object):
     Clase principal del clasificador.
     """
 
-    def __init__(self, source, discrete_intervals=DEFAULT_DISCRETE_INTERVALS, size_rule_generation=20):
+    def __init__(self, source, discrete_intervals=DEFAULT_DISCRETE_INTERVALS, size_rule_generation=20, filter_list=[]):
         """
         Inicializa el clasificador. Toma como fuente un archivo csv y puede
         recibir como parametro opcional la cantidad de intervalos para discretizar
@@ -24,8 +24,9 @@ class Classifier(object):
         super(Classifier, self).__init__()
         self.source = source
         self.discrete_intervals = discrete_intervals
-        self.features, self.data, self.result_types = self._read_source()
+        self.features, self.data, self.result_types = self._read_source(filter_list)
         self.len_features = len(self.features)
+        print "Se tienen", self.len_features, "features distintos."
         self.len_data = len(self.data)
         self.size_rule_generation = size_rule_generation
         self.len_rules = len(self.result_types)
@@ -88,7 +89,7 @@ class Classifier(object):
                     print "End generation", generation
                     print "*************************"
                 max_fitness_list.append(max_fitness[0])
-                if generation % 100 == 0:
+                if generation % (limit_generations / 1000) == 0:
                     list_max_fitness[rule_name].append([generation, max_fitness[0]])
                     list_min_fitness[rule_name].append([generation, min_fitness[0]])
                     list_avg_fitness[rule_name].append([generation, self._average_fitness(list_of_rules)])
@@ -100,6 +101,7 @@ class Classifier(object):
             total_fitness = min(max_fitness_list)
 
         self.best_rules = best_rules
+        #return total_best
 
         print "Total best:", total_best
         trace_list = []
@@ -111,23 +113,23 @@ class Classifier(object):
             avg_fitness_list = list(zip(*list_avg_fitness[type_rule])[1])[1:]
 
             trace = {
-                'x' : generation_list,
-                'y' : max_fitness_list,
+                'x': generation_list,
+                'y': max_fitness_list,
                 'type': 'scatter',
-                'mode': 'lines'
+                'mode': 'markers'
             }
             trace_list.append(trace)
             continue
             trace = {
-                'x' : generation_list,
-                'y' : min_fitness_list,
+                'x': generation_list,
+                'y': min_fitness_list,
                 'type': 'scatter',
                 'mode': 'lines'
             }
             trace_list.append(trace)
             trace = {
-                'x' : generation_list,
-                'y' : avg_fitness_list,
+                'x': generation_list,
+                'y': avg_fitness_list,
                 'type': 'scatter',
                 'mode': 'lines'
             }
@@ -260,7 +262,7 @@ class Classifier(object):
 
         return max_fitness, max_fitness_rule, min_fitness, min_fitness_rule
 
-    def _read_source(self):
+    def _read_source(self, filter_list):
         """
         Lee de la fuente de entrenamiento (csv) tres listas.
             - features: lista de los nombres de los features.
@@ -276,7 +278,7 @@ class Classifier(object):
             reader = csv.DictReader(source)
             header = reader.fieldnames
             for value in header:
-                if value != 'song' and value != 'genre':
+                if value != 'song' and value != 'genre' and value in filter_list:
                     features.append(value)
 
             # para cada linea del csv creo un map de 'result_type', 'song' y 'values'
@@ -307,6 +309,7 @@ class Classifier(object):
         Tenemos que desnormalizar los valores, los vamos a setear desde 0 a 1.
         para esto tenemos que conseguir el minimo y maximo de cada variable.
         """
+        self.normalization_vector = []
         for i, feature in enumerate(features):
             max_val = None
             min_val = None
@@ -325,6 +328,7 @@ class Classifier(object):
                     min_val = min(value, min_val)
 
             max_min_diff = max_val - min_val
+            self.normalization_vector.append([max_min_diff, min_val])
             """
                               x - xMin
             normalize(x) = --------------
@@ -338,6 +342,21 @@ class Classifier(object):
                 song_data['values'][i] = (song_data['values'][i] - min_val) / max_min_diff
 
         return features, data, result_types
+
+    def guess_genre(self, data):
+        # Primero tengo que normalizar los datos
+        for i, [max_min_diff, min_val] in enumerate(self.normalization_vector):
+            data[i] = (data[i] - min_val) / max_min_diff
+
+        rules_result = {}
+        for result_type, rule in self.best_rules.items():
+            positive_values, negative_values = rule['rule'].is_type(data)
+            rules_result[result_type] = positive_values / self.len_features
+
+        print "Scoring por genre: "
+        import operator
+        for result_type, score in sorted(rules_result.iteritems(), key=operator.itemgetter(1)):
+            print result_type, ":", score
 
     def load_rules(self, source):
         """

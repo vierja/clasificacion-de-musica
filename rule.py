@@ -20,12 +20,15 @@ lugar una implementacion de largo fijo para luego poder, con una version que
 funcione, mejorarla.
 """
 
-NEW_RANDOM = 1 
-INCREASE = 2 
+NEW_RANDOM = 1
+INCREASE = 2
 DECREASE = 3
 
+
 class Rule(object):
-    """Regla de clasificacion individual."""
+    """
+    Regla de clasificacion individual.
+    """
 
     def __init__(self, features, discrete_intervals, result_type, parent1=None, parent2=None):
         """
@@ -63,7 +66,6 @@ class Rule(object):
                     self.features_lists.append(parent1.features_lists[num_feature])
                 else:
                     self.features_lists.append(parent2.features_lists[num_feature])
-            pass
 
     @classmethod
     def crossover(cls, parent1, parent2):
@@ -115,7 +117,7 @@ class Rule(object):
 
         return feature_list
 
-    def is_type(self, values, is_type):
+    def is_type(self, values, is_type=None):
         """
         Devuelve True o False dependiendo si los valores se encuentran dentro
         de las reglas especificadas.
@@ -138,22 +140,24 @@ class Rule(object):
 
             if self.features_lists[pos][value_pos]:
                 correct_values += 1
-                if is_type:
-                    # Si la regla es positiva y es de tipo correcto
-                    self.stats[pos][0] += 1
-                else:
-                    # Si la regla es positiva y NO es de tipo correcto
-                    self.stats[pos][1] += 1
+                if is_type is not None: 
+                    if is_type:
+                        # Si la regla es positiva y es de tipo correcto
+                        self.stats[pos][0] += 1
+                    else:
+                        # Si la regla es positiva y NO es de tipo correcto
+                        self.stats[pos][1] += 1
             else:
                 incorrect_values += 1
-                if is_type:
-                    # Si la regla es negativa y es de tipo correcto
-                    self.stats[pos][1] += 1
-                else:
-                    # Si la regla es negativa y NO es de tipo correcto.
-                    self.stats[pos][0] += 1
+                if is_type is not None: 
+                    if is_type:
+                        # Si la regla es negativa y es de tipo correcto
+                        self.stats[pos][1] += 1
+                    else:
+                        # Si la regla es negativa y NO es de tipo correcto.
+                        self.stats[pos][0] += 1
 
-        return correct_values, incorrect_values
+        return abs(correct_values - incorrect_values), 0
 
     def mutate(self, action=NEW_RANDOM):
         """
