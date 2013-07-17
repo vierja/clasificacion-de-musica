@@ -23,12 +23,14 @@ funcione, mejorarla.
 NEW_RANDOM = 1
 INCREASE = 2
 DECREASE = 3
+NEW_INTERVAL = 4
+INCREASE_MULTI_INTERVAL = 5
+DECREASE_MULTI_INTERVAL = 6
 
 
 class Rule(object):
     """
     Regla de clasificacion individual.
-    
     """
 
     def __init__(self, features, discrete_intervals, result_type, parent1=None, parent2=None):
@@ -160,7 +162,7 @@ class Rule(object):
 
         return correct_values, incorrect_values
 
-    def mutate(self, action=NEW_RANDOM):
+    def mutate(self, action=None):
         """
         En la mutacion, cuando se separa un intervalo, se selecciona un punto al azar de los micro-intervalos para hacer el corte. (split)
         Luego cuando se fusiona dos intervalos, el estado resultante (1 o 0) del intervalo se toma del que tiene más micro-intervalos.
@@ -191,12 +193,18 @@ class Rule(object):
                 mutated_features.append(feature_pos)
 
                 # Elijo la accion a tomar.
-                # action = random.choice([NEW_RANDOM, INCREASE, DECREASE])
+                action = random.choice([INCREASE_MULTI_INTERVAL, DECREASE_MULTI_INTERVAL, NEW_RANDOM])
 
                 if action == NEW_RANDOM:
                     self.features_lists[feature_pos] = self._init_random_interval()
 
-                elif action == INCREASE:
+                elif action == NEW_INTERVAL:
+                    interval_size = random.randint(1, 7)
+                    position = random.randint(0, self.discrete_intervals - 4)
+                    for i in range(position, min(self.discrete_intervals - 1, position + interval_size)):
+                        self.features_lists[feature_pos][i] = True
+
+                elif action == INCREASE_MULTI_INTERVAL:
                     """
                     Para esta accion si un intervalo tiene dos partes entonces
                     se incrementa la primera parte del primero y la ultima
@@ -205,34 +213,51 @@ class Rule(object):
                     no se incrementa.
                     """
                     # Elijo al azar cuanto se va a incrementar el intervalo.
-                    increase_size = random.randint(1, 5)
-                    # Listo las posiciones de True de la lista.
-                    true_interval_positions = [i for i in range(self.discrete_intervals) if self.features_lists[feature_pos][i]]
+                    increase_size = random.randint(1, 1)
+                    interval_list = self._find_intervals(self.features_lists[feature_pos])
+                    if len(interval_list) == 0:
+                        selected_interval = [random.randint(0, self.discrete_intervals - 10)]
+                        selected_interval.append(selected_interval[0] + increase_size)
+                    else:
+                        selected_interval = random.choice(interval_list)
 
-                    if len(true_interval_positions) < 1:
-                        continue
-                    # Expando el intervalo de la primera parte.
-                    if true_interval_positions[0] > 0:
-                        for i in range(max(0, true_interval_positions[0] - increase_size), true_interval_positions[0]):
+                    modified = []
+                    if selected_interval[0] != 0 and random.choice([True, False]):
+                        # Expando el intervalo de la primera parte.
+                        for i in range(max(0, selected_interval[0] - increase_size), selected_interval[0]):
                             self.features_lists[feature_pos][i] = True
-                    # Expando el intervalo de la ultima parte.
-                    if true_interval_positions[-1] < self.discrete_intervals:
-                        for i in range(true_interval_positions[-1] + 1, min(self.discrete_intervals - 1, true_interval_positions[-1] + increase_size)):
+                            modified.append(i)
+                    elif selected_interval[-1] != self.discrete_intervals:
+                        # Expando el intervalo de la ultima parte.
+                        for i in range(selected_interval[-1] + 1, min(self.discrete_intervals, selected_interval[-1] + increase_size + 1)):
                             self.features_lists[feature_pos][i] = True
+                            modified.append(i)
+                    #print "modified:",modified,", increase_size:", increase_size, ", selected_interval:", selected_interval
+                    #assert len(modified) == increase_size
 
-                elif action == DECREASE:
-                    decrease_size = random.randint(1, 5)
-                    true_interval_positions = [i for i in range(self.discrete_intervals) if self.features_lists[feature_pos][i]]
-                    if len(true_interval_positions) < decrease_size * 2:
+                elif action == DECREASE_MULTI_INTERVAL:
+
+                    interval_list = self._find_intervals(self.features_lists[feature_pos])
+                    if len(interval_list) == 0:
                         continue
-                    # Disminuyo el intervalo de la primera parte
-                    # print "true_interval_positions", true_interval_positions, "decrease_size", decrease_size
-                    for i in range(true_interval_positions[0], true_interval_positions[0] + decrease_size):
+                    selected_interval = random.choice(interval_list)
+                    decrease_size = random.randint(1, 1)
+
+                    if selected_interval[-1] - selected_interval[0] < decrease_size:
+                        decrease_size = selected_interval[-1] - selected_interval[0]
+
+                    modified = []
+                    for i in range(selected_interval[0], selected_interval[0] + decrease_size):
                         self.features_lists[feature_pos][i] = False
+                        modified.append(i)
                     # Disminuyo el intervalo de la segunda parte
-                    for i in range(true_interval_positions[-1] - decrease_size + 1, true_interval_positions[0] - 1):
+                    for i in range(max(0, selected_interval[-1] - decrease_size), selected_interval[-1]):
                         self.features_lists[feature_pos][i] = False
+                        modified.append(i)
+                    #print "modified:",modified,", decrease_size:", decrease_size, ", selected_interval:", selected_interval
+                    #print self.features_lists[feature_pos]
 
+                    #assert len(modified) == decrease_size * 2
                 # Luego de la mutacion resteo las estadisticas
                 self.stats[feature_pos] = [0, 0]
         return
@@ -245,6 +270,22 @@ class Rule(object):
 
         # # Si el valor que voy a mutar es True entonces lo cambio a False y si es False a True
         # self.features_lists[feature][position] = not self.features_lists[feature][position]
+
+    def _find_intervals(self, feature_list):
+        len_list = len(feature_list)
+        interval_list = []
+        i = 0
+        #print "_find_intervals(", feature_list, ")"
+        while i < len_list:
+            interval_start = i
+            if feature_list[i]:
+                while i < len_list and feature_list[i]:
+                    i += 1
+
+                interval_end = i
+                interval_list.append([interval_start, interval_end])
+            i += 1
+        return interval_list
 
     def print_rule(self):
         print "Feature list size: ", self.features_len

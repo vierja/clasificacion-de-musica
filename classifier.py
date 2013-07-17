@@ -6,6 +6,7 @@ import random
 import csv
 from rule import Rule
 import plotly
+import sys
 
 DEFAULT_DISCRETE_INTERVALS = 100
 
@@ -15,7 +16,7 @@ class Classifier(object):
     Clase principal del clasificador.
     """
 
-    def __init__(self, source, discrete_intervals=DEFAULT_DISCRETE_INTERVALS, size_rule_generation=20, filter_list=[]):
+    def __init__(self, source, discrete_intervals=DEFAULT_DISCRETE_INTERVALS, size_rule_generation=20, filter_list=[], log_results=False):
         """
         Inicializa el clasificador. Toma como fuente un archivo csv y puede
         recibir como parametro opcional la cantidad de intervalos para discretizar
@@ -26,12 +27,14 @@ class Classifier(object):
         self.discrete_intervals = discrete_intervals
         self.features, self.train_data, self.test_data, self.result_types = self._read_source(filter_list)
         self.len_features = len(self.features)
-        print "Se tienen", self.len_features, "features distintos."
+        if log_results:
+            print "Se tienen", self.len_features, "features distintos."
         self.len_data = len(self.train_data)
         self.size_rule_generation = size_rule_generation
         self.len_rules = len(self.result_types)
         self.best_rules = {}
         self.py = plotly.plotly(username='vierja', key='uzkqabvlzm', verbose=False)
+        self.log_results = log_results
 
         # Cada regla tiene `size_rule_generation` reglas inicialmente creadas
         # al azar.
@@ -50,7 +53,7 @@ class Classifier(object):
                 rule_dict = {'rule': rule, 'fitness': self._rule_fitness(rule)}
                 self.rules[result_type].append(rule_dict)
 
-    def train(self, req_min_fitness=6, gen_select=2, limit_generations=10000):
+    def train(self, req_min_fitness=6, gen_select=2, mutation_prob=0.05, limit_generations=10000):
         """
         Realiza el entrenamiento de las reglas, mutandolas usando tecnicas de
         algoritmos evolutivos hasta que el fitness total de el conjunto de las
@@ -75,12 +78,12 @@ class Classifier(object):
                 list_of_rules = self._crossover(list_of_rules)
                 assert len(list_of_rules) == self.size_rule_generation
                 # modifica la lista
-                self._mutate(list_of_rules)
+                self._mutate(list_of_rules, mutation_probability=mutation_prob)
                 max_fitness, best_rule, min_fitness, worst_rule = self._evaluate_fitness(list_of_rules)
                 if max_fitness[0] > total_best[rule_name]['fitness']:
-                    total_best[rule_name] = {'rule': best_rule, 'fitness': max_fitness[0]}
+                    total_best[rule_name] = {'rule': best_rule, 'fitness': max_fitness[0], 'generation': generation}
                 # Se guarda el max_fitness para comparar rapidamente.
-                if generation % 5000 == -1:
+                if generation % 5000 == -1 and self.log_results:
                     print "Best", rule_name, "rule of generation", generation, ", fitness:", max_fitness, ". Rule:"
                     best_rule.print_rule()
                     print "All", len(list_of_rules), "rules for ", rule_name, " of generation", generation
@@ -89,6 +92,8 @@ class Classifier(object):
                     print "*************************"
                 max_fitness_list.append(max_fitness[0])
                 if generation % (limit_generations / 1000) == 0:
+                    # if max_fitness[0] < 0.4:
+                    #     print list_of_rules
                     list_max_fitness[rule_name].append([generation, max_fitness[0]])
                     list_min_fitness[rule_name].append([generation, min_fitness[0]])
                     list_avg_fitness[rule_name].append([generation, self._average_fitness(list_of_rules)])
@@ -98,49 +103,51 @@ class Classifier(object):
             total_fitness = min(max_fitness_list)
 
         self.best_rules = total_best
+        #self._print_best_rules(self.best_rules)
         #return total_best
 
-        print "Total best:", total_best
-        trace_list = []
-        for type_rule, list_fitness in list_max_fitness.items():
-            unziped = zip(*list_fitness)
-            generation_list = list(unziped[0])
-            max_fitness_list = list(unziped[1])
-            min_fitness_list = list(zip(*list_min_fitness[type_rule])[1])
-            avg_fitness_list = list(zip(*list_avg_fitness[type_rule])[1])
+        if self.log_results:
+            print "\nTotal best:", total_best
+            trace_list = []
+            for type_rule, list_fitness in list_max_fitness.items():
+                unziped = zip(*list_fitness)
+                generation_list = list(unziped[0])
+                max_fitness_list = list(unziped[1])
+                min_fitness_list = list(zip(*list_min_fitness[type_rule])[1])
+                avg_fitness_list = list(zip(*list_avg_fitness[type_rule])[1])
 
-            trace = {
-                'name': "Max " + type_rule,
-                'x': generation_list,
-                'y': max_fitness_list,
-                'type': 'scatter',
-                'mode': 'markers'
-            }
-            trace_list.append(trace)
-            continue
-            trace = {
-                'x': generation_list,
-                'y': min_fitness_list,
-                'type': 'scatter',
-                'mode': 'lines'
-            }
-            trace_list.append(trace)
-            trace = {
-                'x': generation_list,
-                'y': avg_fitness_list,
-                'type': 'scatter',
-                'mode': 'lines'
-            }
-            trace_list.append(trace)
+                trace = {
+                    'name': "Max " + type_rule,
+                    'x': generation_list,
+                    'y': max_fitness_list,
+                    'type': 'scatter',
+                    'mode': 'markers'
+                }
+                trace_list.append(trace)
+                continue
+                trace = {
+                    'x': generation_list,
+                    'y': min_fitness_list,
+                    'type': 'scatter',
+                    'mode': 'lines'
+                }
+                trace_list.append(trace)
+                trace = {
+                    'x': generation_list,
+                    'y': avg_fitness_list,
+                    'type': 'scatter',
+                    'mode': 'lines'
+                }
+                trace_list.append(trace)
 
-        try:
-            response = self.py.plot(trace_list)
-            print "Performance graph:", response['url']
-        except Exception, e:
-            print "Connection error: ", e
-            print "Could not generate graph."
+            try:
+                response = self.py.plot(trace_list)
+                print "Performance graph:", response['url']
+            except Exception, e:
+                print "Connection error: ", e
+                print "Could not generate graph."
 
-        return total_fitness
+        return total_best
 
     def _rule_fitness(self, rule):
         """
@@ -175,7 +182,14 @@ class Classifier(object):
 
         # (a + b + c + d) / (len_data * num_features) == (a/num_features + b/num_features + c/num_features + d/num_features) / len_data
         # entonces para optimizar divido por num_features despues.
-        return abs(correct_results - incorrect_results) / (self.len_data * self.len_features), incorrect_results / (self.len_data * self.len_features)
+        rule_fitness = 0
+        if correct_results >= incorrect_results:
+              rule_fitness = (correct_results - incorrect_results) / (self.len_data * self.len_features)
+
+        # Para probar
+        #rule_fitness = correct_results / (self.len_data * self.len_features)
+
+        return rule_fitness, incorrect_results / (self.len_data * self.len_features)
 
     def _select_rules(self, list_of_rules, num_select, type=selection.ROULETTE_WHEEL_SELECTION):
         """
@@ -344,7 +358,6 @@ class Classifier(object):
             for song_data in data:
                 song_data['values'][i] = (song_data['values'][i] - min_val) / max_min_diff
 
-
         train_data = []
         test_data = []
 
@@ -358,65 +371,77 @@ class Classifier(object):
 
         return features, train_data, test_data, result_types
 
-
     def test(self):
         results_by_type = dict((type, dict((type, 0) for type in self.result_types)) for type in self.result_types)
+        num_results_by_type = dict((type, 0) for type in self.result_types)
         results_by_type_positive_negative = dict((type, {"correct": 0, "incorrect": 0}) for type in self.result_types)
+        results_by_correct_value_score = dict((type, []) for type in self.result_types)
         for song_data in self.test_data:
-            print "Se evalua cancion de tipo:", song_data['result_type']
-            guessed_genre = self.guess_genre(song_data['values'])
+            num_results_by_type[song_data['result_type']] += 1
+            if self.log_results:
+                print "Se evalua cancion de tipo:", song_data['result_type'], ", cancion:", song_data['song']
+            guessed_genre, value_correct = self.guess_genre(song_data['values'], song_data['result_type'])
+            results_by_correct_value_score[song_data['result_type']].append(value_correct)
             if guessed_genre == song_data['result_type']:
                 results_by_type[song_data['result_type']][guessed_genre] += 1
                 results_by_type_positive_negative[song_data['result_type']]["correct"] += 1
-                print "CORRECT!"
+                if self.log_results: print "CORRECT!"
             else:
                 results_by_type[song_data['result_type']][guessed_genre] += 1
                 results_by_type_positive_negative[song_data['result_type']]["incorrect"] += 1
-                print "Incorrect."
+                if self.log_results: print "Incorrect."
 
         graph_list = []
 
-        result_type_list = [result_type for result_type, _ in results_by_type.items()]
+        if self.log_results:
+            result_type_list = [result_type for result_type, _ in results_by_type.items()]
 
-        for result_type, result_test in results_by_type.items():
-            res_map = {
-                "name": result_type,
+            for result_type, result_test in results_by_type.items():
+                res_map = {
+                    "name": result_type,
+                    "x": result_type_list,
+                    "y": [results_by_type[each_type][result_type] for each_type in result_type_list],
+                    "type": "bar"
+                }
+                graph_list.append(res_map)
+
+            layout = {
+                "barmode": "group",
+                'xaxis': {'type': 'combination'},
+                'categories': result_type_list
+            }
+            response = self.py.plot(graph_list, layout=layout)
+            print response['url']
+
+            correct = {
+                "name": "Correct",
                 "x": result_type_list,
-                "y": [results_by_type[each_type][result_type] for each_type in result_type_list],
+                "y": [result["correct"] for res_type, result in results_by_type_positive_negative.items()],
                 "type": "bar"
             }
-            graph_list.append(res_map)
 
-        layout = {
-            "barmode": "group",
-            'xaxis': {'type': 'combination'},
-            'categories': result_type_list
-        }
-        response = self.py.plot(graph_list, layout=layout)
-        print response['url']
+            incorrect = {
+                "name": "Incorrect",
+                "x": result_type_list,
+                "y": [result["incorrect"] for res_type, result in results_by_type_positive_negative.items()],
+                "type": "bar"
+            }
+            layout = {
+                "barmode": "group",
+                'xaxis': {'type': 'combination'},
+                'categories': result_type_list
+            }
+            response = self.py.plot([correct, incorrect], layout=layout)
+            print response['url']
 
-        correct = {
-            "name": "Correct",
-            "x": result_type_list,
-            "y": [result["correct"] for res_type, result in results_by_type_positive_negative.items()],
-            "type": "bar"
-        }
+            for result_type, correct_value_score in results_by_correct_value_score.items():
+                print "Average correct value score for", result_type, " = ", reduce(lambda x, y: x + y, correct_value_score) / len(correct_value_score)
 
-        incorrect = {
-            "name": "Incorrect",
-            "x": result_type_list,
-            "y": [result["incorrect"] for res_type, result in results_by_type_positive_negative.items()],
-            "type": "bar"
-        }
-        layout = {
-            "barmode": "group",
-            'xaxis': {'type': 'combination'},
-            'categories': result_type_list
-        }
-        response = self.py.plot([correct, incorrect], layout=layout)
-        print response['url']
+        avg_correct_rules = [{result_type: reduce(lambda x, y: x + y, correct_value_score) / len(correct_value_score)} for result_type, correct_value_score in results_by_correct_value_score.items()]
+        correct_results = [{res_type: result["correct"] / num_results_by_type[res_type]} for res_type, result in results_by_type_positive_negative.items()]
+        return avg_correct_rules, correct_results
 
-    def guess_genre(self, data, normalize=False):
+    def guess_genre(self, data, data_type, normalize=False):
         if normalize:
             # Primero tengo que normalizar los datos
             for i, [max_min_diff, min_val] in enumerate(self.normalization_vector):
@@ -427,13 +452,16 @@ class Classifier(object):
             positive_values, negative_values = rule['rule'].is_type(data)
             rules_result[result_type] = positive_values / self.len_features
 
-        print "  Scoring por genre: "
+        if self.log_results: print "  Scoring por genre: "
         import operator
         sorted_scores = sorted(rules_result.iteritems(), key=operator.itemgetter(1), reverse=True)
         #print sorted_scores
+        correct_value_score = 0
         for result_type, score in sorted_scores:
-            print "   -", result_type, ":", score
-        return sorted_scores[0][0]
+            if data_type == result_type:
+                correct_value_score = score
+            if self.log_results: print "   -", result_type, ":", score
+        return sorted_scores[0][0], correct_value_score
 
     def load_rules(self, source):
         """
@@ -448,6 +476,11 @@ class Classifier(object):
         Guarda las reglas en un archivo
         """
         pass
+
+    def _print_best_rules(self, best_rules):
+        for rule_type, rule_dict in best_rules.items():
+            print "Best rule: rule type:", rule_dict['rule'].result_type, ", rule fitness:", rule_dict['fitness']
+            rule_dict['rule'].print_rule()
 
     def _print_list_of_rules(self, list_of_rules):
         for i, rule_dict in enumerate(list_of_rules):
