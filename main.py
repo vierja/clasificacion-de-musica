@@ -25,13 +25,13 @@ def main():
     """
     defaults = [100, 10, 0.9, 4, 0.05, 10000, selection.ROULETTE_WHEEL_SELECTION]
 
-    classifier = Classifier(args['data'], discrete_intervals=defaults[0], size_rule_generation=defaults[1], filter_list=["skewness", "spectral_rolloff", "energy", "sv", "spread", "centroid", "obsi", "kurtosis"], log_results=False)
+    classifier = Classifier(args['data'], discrete_intervals=defaults[0], size_rule_generation=defaults[1], filter_list=["skewness", "spectral_rolloff", "energy", "sv", "spread", "centroid", "obsi", "kurtosis"], log_results=True)
     start = time.clock()
     best_results = classifier.train(req_min_fitness=defaults[2], gen_select=defaults[3], mutation_prob=defaults[4], limit_generations=defaults[5])
     duration = (time.clock() - start)*1000
-    print "Duration\t", duration
+    print "Duration\t", duration, "ms"
     print "Training endend."
-    print "Best results:", best_results
+    print "Best results:", ', '.join([str(key) + " fitness: " + str(value['fitness']) for key, value in best_results.items()])
     print "Testing:"
     classifier.test()
     print "Testing ended."
