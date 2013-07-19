@@ -53,7 +53,7 @@ class Classifier(object):
                 rule_dict = {'rule': rule, 'fitness': self._rule_fitness(rule)}
                 self.rules[result_type].append(rule_dict)
 
-    def train(self, req_min_fitness=6, gen_select=2, mutation_prob=0.05, limit_generations=10000):
+    def train(self, req_min_fitness=6, gen_select=2, selection_type=selection.TOURNAMENT_SELECTION, mutation_prob=0.05, limit_generations=10000):
         """
         Realiza el entrenamiento de las reglas, mutandolas usando tecnicas de
         algoritmos evolutivos hasta que el fitness total de el conjunto de las
@@ -74,7 +74,7 @@ class Classifier(object):
 
             for rule_name, list_of_rules in self.rules.items():
                 # devuelve una nueva lista
-                list_of_rules = self._select_rules(list_of_rules, gen_select)
+                list_of_rules = self._select_rules(list_of_rules, gen_select, type=selection_type)
                 list_of_rules = self._crossover(list_of_rules)
                 assert len(list_of_rules) == self.size_rule_generation
                 # modifica la lista
@@ -103,8 +103,6 @@ class Classifier(object):
             total_fitness = min(max_fitness_list)
 
         self.best_rules = total_best
-        #self._print_best_rules(self.best_rules)
-        #return total_best
 
         if self.log_results:
             print "\nTotal best:", total_best
@@ -184,7 +182,7 @@ class Classifier(object):
         # entonces para optimizar divido por num_features despues.
         rule_fitness = 0
         if correct_results >= incorrect_results:
-              rule_fitness = (correct_results - incorrect_results) / (self.len_data * self.len_features)
+            rule_fitness = (correct_results - incorrect_results) / (self.len_data * self.len_features)
 
         # Para probar
         #rule_fitness = correct_results / (self.len_data * self.len_features)
@@ -385,11 +383,13 @@ class Classifier(object):
             if guessed_genre == song_data['result_type']:
                 results_by_type[song_data['result_type']][guessed_genre] += 1
                 results_by_type_positive_negative[song_data['result_type']]["correct"] += 1
-                if self.log_results: print "CORRECT!"
+                if self.log_results:
+                    print "CORRECT!"
             else:
                 results_by_type[song_data['result_type']][guessed_genre] += 1
                 results_by_type_positive_negative[song_data['result_type']]["incorrect"] += 1
-                if self.log_results: print "Incorrect."
+                if self.log_results:
+                    print "Incorrect."
 
         graph_list = []
 
@@ -410,8 +410,12 @@ class Classifier(object):
                 'xaxis': {'type': 'combination'},
                 'categories': result_type_list
             }
-            response = self.py.plot(graph_list, layout=layout)
-            print response['url']
+            try:
+                response = self.py.plot(graph_list, layout=layout)
+                print response['url']
+            except Exception, e:
+                print "Connection error: ", e
+                print "Could not generate graph."
 
             correct = {
                 "name": "Correct",
@@ -431,8 +435,12 @@ class Classifier(object):
                 'xaxis': {'type': 'combination'},
                 'categories': result_type_list
             }
-            response = self.py.plot([correct, incorrect], layout=layout)
-            print response['url']
+            try:
+                response = self.py.plot([correct, incorrect], layout=layout)
+                print response['url']
+            except Exception, e:
+                print "Connection error: ", e
+                print "Could not generate graph."
 
             for result_type, correct_value_score in results_by_correct_value_score.items():
                 print "Average correct value score for", result_type, " = ", reduce(lambda x, y: x + y, correct_value_score) / len(correct_value_score)
@@ -452,7 +460,8 @@ class Classifier(object):
             positive_values, negative_values = rule['rule'].is_type(data)
             rules_result[result_type] = positive_values / self.len_features
 
-        if self.log_results: print "  Scoring por genre: "
+        if self.log_results:
+            print "  Scoring por genre: "
         import operator
         sorted_scores = sorted(rules_result.iteritems(), key=operator.itemgetter(1), reverse=True)
         #print sorted_scores
@@ -460,7 +469,8 @@ class Classifier(object):
         for result_type, score in sorted_scores:
             if data_type == result_type:
                 correct_value_score = score
-            if self.log_results: print "   -", result_type, ":", score
+            if self.log_results:
+                print "   -", result_type, ":", score
         return sorted_scores[0][0], correct_value_score
 
     def load_rules(self, source):

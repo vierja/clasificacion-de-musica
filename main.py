@@ -2,37 +2,72 @@
 import argparse
 import itertools
 import plotly
+import selection
 from classifier import Classifier
 import sys
+import time
 
 
 def main():
     parser = argparse.ArgumentParser(description='Clasificador de musica.\nToma los datos de entrenamiento de un archivo y utiliza algoritmos evolutivos para crear y mejorar las reglas de clasificación.')
     parser.add_argument('-d', '--data', help='Archivo donde se encuentra la información fuente para el clasificador.')
-    parser.add_argument('-o', '--output', help='Archivo donde guardar las reglas si es que se quiere persistir.')
-    parser.add_argument('-i', '--input', help='Archivo de reglas persistidas para cargar.')
     args = vars(parser.parse_args())
 
-    #test_combinations(args)
+    defaults = [100, 10, 0.9, 4, 0.05, 10000, selection.ROULETTE_WHEEL_SELECTION]
 
+    classifier = Classifier(args['data'], discrete_intervals=defaults[0], size_rule_generation=defaults[1], filter_list=["skewness", "spectral_rolloff", "energy", "sv", "spread", "centroid", "obsi", "kurtosis"], log_results=False)
+    start = time.clock()
+    best_results = classifier.train(req_min_fitness=defaults[2], gen_select=defaults[3], mutation_prob=defaults[4], limit_generations=defaults[5])
+    duration = (time.clock() - start)*1000
+    print "Duration\t", duration
+    print "Training endend."
+    print "Best results:", best_results
+    print "Testing:"
+    classifier.test()
+    print "Testing ended."
+
+
+def test(args):
+    test_performance(args, 5)
+    return
     #return
     options = [
-        [100, 10, 0.9, 4, 0.05, 10000],  # discrete_intervals, size_rule_generation, req_min_fitness, gen_select, limit_generations
-        [1000, 10, 0.9, 4, 0.05, 10000],
-        [100, 20, 0.9, 4, 0.05, 10000],
-        [100, 5, 0.9, 2, 0.05, 10000],
-        [100, 10, 0.9, 2, 0.05, 10000],
-        [100, 10, 0.9, 6, 0.05, 10000],
-        [200, 50, 0.9, 10, 0.05, 10000],
-        [300, 10, 0.9, 4, 0.1, 10000],
-        [500, 15, 0.9, 2, 0.005, 10000],
-        [50, 20, 0.9, 4, 0.1, 10000]
+        [100, 10, 0.9, 4, 0.05, 10000, selection.ROULETTE_WHEEL_SELECTION],  # discrete_intervals, size_rule_generation, req_min_fitness, gen_select, limit_generations
+        [1000, 10, 0.9, 4, 0.05, 10000, selection.ROULETTE_WHEEL_SELECTION],
+        [100, 20, 0.9, 4, 0.05, 10000, selection.ROULETTE_WHEEL_SELECTION],
+        [100, 5, 0.9, 2, 0.05, 10000, selection.ROULETTE_WHEEL_SELECTION],
+        [100, 10, 0.9, 2, 0.05, 10000, selection.ROULETTE_WHEEL_SELECTION],
+        [100, 10, 0.9, 6, 0.05, 10000, selection.ROULETTE_WHEEL_SELECTION],
+        [200, 50, 0.9, 10, 0.05, 10000, selection.ROULETTE_WHEEL_SELECTION],
+        [300, 10, 0.9, 4, 0.1, 10000, selection.ROULETTE_WHEEL_SELECTION],
+        [500, 15, 0.9, 2, 0.005, 10000, selection.ROULETTE_WHEEL_SELECTION],
+        [50, 20, 0.9, 4, 0.1, 10000, selection.ROULETTE_WHEEL_SELECTION]
     ]
 
-    #test_combinations(args)
-    #return
+    #prueba Tamaño de población
+    options = [
+        [100, 5, 0.9, 2, 0.05, 10000, selection.ROULETTE_WHEEL_SELECTION],
+        [100, 10, 0.9, 2, 0.05, 10000, selection.ROULETTE_WHEEL_SELECTION],
+        [100, 15, 0.9, 2, 0.05, 10000, selection.ROULETTE_WHEEL_SELECTION],
+        [100, 20, 0.9, 2, 0.05, 10000, selection.ROULETTE_WHEEL_SELECTION],
+        [100, 30, 0.9, 2, 0.05, 10000, selection.ROULETTE_WHEEL_SELECTION],
+        [100, 50, 0.9, 2, 0.05, 10000, selection.ROULETTE_WHEEL_SELECTION]
+    ]
+
+    #prueba Proceso de seleccion
+    options = [
+        [100, 10, 0.9, 2, 0.05, 10000, selection.ROULETTE_WHEEL_SELECTION],
+        [100, 10, 0.9, 2, 0.05, 10000, selection.RANK_SELECTION],
+        [100, 10, 0.9, 2, 0.05, 10000, selection.TOURNAMENT_SELECTION]
+    ]
+
+    options = [
+        [100, 10, 0.9, 2, 0.05, 10000, selection.ROULETTE_WHEEL_SELECTION],
+    ]
+
     average_multiple_runs(30, options, args)
-    return
+
+    test_combinations(args)
 
     for num, option in enumerate(options):
         print "Option num:", num, ", val:", option
@@ -53,7 +88,7 @@ def average_multiple_runs(num_runs, options, args):
         for i in range(num_runs):
             print "Running #" + str(i + 1)
             classifier = Classifier(args['data'], discrete_intervals=option[0], size_rule_generation=option[1], filter_list=["skewness", "spectral_rolloff", "energy", "sv", "spread", "centroid", "obsi", "kurtosis"], log_results=False)
-            best_results = classifier.train(req_min_fitness=option[2], gen_select=option[3], mutation_prob=option[4], limit_generations=option[5])
+            best_results = classifier.train(req_min_fitness=option[2], gen_select=option[3], mutation_prob=option[4], limit_generations=option[5], selection_type=option[6])
             test_results, correct_results = classifier.test()
             list_best_results.append(best_results)
             list_test_results.append(test_results)
@@ -73,6 +108,21 @@ def average_multiple_runs(num_runs, options, args):
         for i, results in enumerate(list_correct_results):
             for avg_map in results:
                 print str(i + 1) + "\t" + avg_map.keys()[0][:7] + "\t" + str(avg_map[avg_map.keys()[0]])
+
+
+def test_performance(args, num_runs):
+    #Features:
+    features = ["skewness", "spectral_rolloff", "energy", "sv", "spread", "centroid", "zcr", "obsi", "kurtosis"]
+    option = [100, 10, 0.9, 2, 0.05, 1000, selection.ROULETTE_WHEEL_SELECTION]
+    for i in range(1, len(features) + 1):
+        print "Num of features:", i
+        for num_run in range(num_runs):
+            classifier = Classifier(args['data'], discrete_intervals=option[0], size_rule_generation=option[1], filter_list=features[:i], log_results=False)
+            start = time.clock()
+            classifier.train(req_min_fitness=option[2], gen_select=option[3], mutation_prob=option[4], limit_generations=option[5], selection_type=option[6])
+            duration = (time.clock() - start)*1000
+            print num_run, "\t", duration
+
 
 def test_combinations(args, graph=False):
     py = plotly.plotly(username='vierja', key='uzkqabvlzm', verbose=False)
@@ -107,7 +157,6 @@ def test_combinations(args, graph=False):
                 classical_y.append(top_fitness['classical'])
                 categories.append(comb_name)
 
-
                 if len(categories) > 20:
                     electronic = {
                         "name": "Metal",
@@ -133,8 +182,6 @@ def test_combinations(args, graph=False):
                     electronic_y = []
                     classical_y = []
                     categories = []
-
-
 
 
 if __name__ == '__main__':
