@@ -185,7 +185,7 @@ class Classifier(object):
             rule_fitness = (correct_results - incorrect_results) / (self.len_data * self.len_features)
 
         # Para probar
-        #rule_fitness = correct_results / (self.len_data * self.len_features)
+        # rule_fitness = correct_results / (self.len_data * self.len_features)
 
         return rule_fitness, incorrect_results / (self.len_data * self.len_features)
 

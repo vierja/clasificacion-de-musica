@@ -13,6 +13,16 @@ def main():
     parser.add_argument('-d', '--data', help='Archivo donde se encuentra la información fuente para el clasificador.')
     args = vars(parser.parse_args())
 
+    """
+    Los valores default son:
+        tamaño discretizacion - 100
+        poblacion de generacion - 10
+        min fitness para terminar - 0.9
+        numero a seleccionar - 4
+        porcentaje de mutacion - 0.05
+        maximo de generaciones - 10000
+        tipo de seleccion - ROULETTE_WHEEL_SELECTION
+    """
     defaults = [100, 10, 0.9, 4, 0.05, 10000, selection.ROULETTE_WHEEL_SELECTION]
 
     classifier = Classifier(args['data'], discrete_intervals=defaults[0], size_rule_generation=defaults[1], filter_list=["skewness", "spectral_rolloff", "energy", "sv", "spread", "centroid", "obsi", "kurtosis"], log_results=False)
